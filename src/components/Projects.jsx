@@ -7,7 +7,7 @@ export function Projects({ setActiveSection }) {
     {
       title: 'Association Union Management System',
       description: 'A comprehensive management system for student associations and unions. Features include member management, event coordination, voting systems, and financial tracking.',
-      technologies: ['PHP', 'MySQL', 'Bootstrap', 'JavaScript'],
+      technologies: ['node js', 'Mongodb', 'Bootstrap', 'JavaScript','react js'],
       icon: Users,
       image: '/images/murtiguto.png',
       demoUrl: 'https://murti-guutoo-student-association-ze.vercel.app/',
@@ -17,7 +17,7 @@ export function Projects({ setActiveSection }) {
     {
       title: 'Student Contact & Roster Management',
       description: 'Digital roster system for managing student information, contact details, attendance tracking, and academic records with an intuitive admin dashboard.',
-      technologies: ['Node.js', 'Express.js', 'MongoDB', 'React.js'],
+      technologies: ['php', 'javascitp', 'mysql', 'html','css'],
       icon: Contact,
       image: '/images/Student Contact Management System.png',
     
@@ -27,7 +27,7 @@ export function Projects({ setActiveSection }) {
     {
       title: 'Event Management Platform',
       description: 'Complete event planning and management solution with registration, ticketing, scheduling, and real-time notifications for attendees and organizers.',
-      technologies: ['React.js', 'Node.js', 'MySQL', 'Tailwind CSS'],
+      technologies: ['Html', ,'javascript','php', 'MySQL', 'Tailwind CSS'],
       icon: Calendar,
       image: '/images/Event Management System.png',
    
@@ -36,13 +36,24 @@ export function Projects({ setActiveSection }) {
     {
       title: 'Portfolio Website',
       description: 'Personal portfolio website showcasing projects, skills, and professional experience. Built with modern web technologies and smooth animations.',
-      technologies: ['React.js', 'Tailwind CSS', 'Motion', 'TypeScript'],
+      technologies: ['React.js', 'Tailwind CSS', 'Motion', 'javascript'],
       icon: Globe,
-      image: '/images/Student Roster Management.png',
+      image: 'images/image copy.png',
     
-      githubUrl: 'https://github.com/yihune1234/Roster-Management-System',
+      githubUrl: 'https://github.com/yihune1234/YihuneBelayPortfolio',
       role: 'Solo Developer',
     },
+    {
+  title: 'Event Management Platform Basic',
+  description: 'A lightweight and fully functional event management system built with pure Node.js and Express. Allows users to create, view, edit, and delete events through a clean RESTful API and responsive web interface.',
+  technologies: ['Node.js', 'Express.js', 'JavaScript', 'HTML5', 'CSS3', 'EJS'],
+  icon: Calendar,
+  image: 'images/image_2025-12-02_01-30-21.jpg',
+  githubUrl: 'https://github.com/yihune1234/CodVeda-Level1-Project-Internship-/tree/backend',
+  liveUrl: 'https://yihune1234.github.io/CodVeda-Level1-Project-Internship-/index.html', // optional
+  role: 'Full-Stack Developer',
+},
+
   ];
 
   const miniProjects = [

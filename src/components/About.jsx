@@ -4,7 +4,6 @@ import { Code2, Briefcase, Award, Database, Layout, Server, Globe, GitBranch, Pa
 export function About() {
   const stats = [
     { label: 'Year Student', value: '4th', icon: Briefcase },
-    { label: 'Projects Built', value: '40+', icon: Award },
     { label: 'Tech Stack', value: 'Full-Stack', icon: Code2 }
   ];
 

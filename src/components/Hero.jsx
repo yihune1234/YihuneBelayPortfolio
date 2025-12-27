@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Github, Linkedin, Twitter, ArrowRight, Sparkles, Code2, Rocket, Globe } from 'lucide-react';
+import { Github, Linkedin, Twitter, ArrowRight, Sparkles, Code2, Rocket, Globe, Download } from 'lucide-react';
 
 export function Hero({ setActiveSection }) {
   return (
@@ -56,23 +56,33 @@ export function Hero({ setActiveSection }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="flex flex-wrap items-center gap-6 mb-12"
+              className="flex flex-wrap items-center gap-4 mb-12"
             >
               <button
                 onClick={() => setActiveSection('projects')}
-                className="btn-primary flex items-center gap-2 group relative overflow-hidden px-8 py-4 rounded-2xl"
+                className="btn-primary flex items-center gap-2 group relative overflow-hidden px-6 py-4 rounded-2xl"
               >
-                <Rocket size={20} />
+                <Rocket size={18} />
                 <span className="relative z-10">View My Work</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform relative z-10" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10" />
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </button>
+
+              <a
+                href="/resume.pdf"
+                download="YIHUNE-BELAY-SEBSIBE.pdf"
+                className="btn-outline flex items-center gap-2 px-6 py-4 rounded-2xl glass-card border-[3px]"
+              >
+                <Download size={18} />
+                Download CV
+              </a>
+
               <button
                 onClick={() => setActiveSection('contact')}
-                className="btn-outline flex items-center gap-2 px-8 py-4 rounded-2xl glass-card border-[3px]"
+                className="p-4 glass-card rounded-2xl hover:bg-muted transition-colors flex items-center justify-center border border-white/10"
+                title="Get In Touch"
               >
-                <Code2 size={20} />
-                Get In Touch
+                <Code2 size={20} className="text-[var(--primary)]" />
               </button>
             </motion.div>
 
@@ -149,31 +159,6 @@ export function Hero({ setActiveSection }) {
                     </div>
                   </div>
                 </motion.div>
-              </div>
-            </motion.div>
-
-            {/* Floating Card 1 - Top Right */}
-            <motion.div
-              animate={{
-                y: [0, -15, 0],
-                rotate: [0, 5, 0],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0.5
-              }}
-              className="absolute -top-6 -right-6 glass-card p-4 rounded-2xl shadow-xl hidden md:block"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-[var(--primary)] to-purple-500 rounded-xl flex items-center justify-center">
-                  <Code2 className="text-white" size={24} />
-                </div>
-                <div>
-                  <p className="font-bold text-sm">40+</p>
-                  <p className="text-xs text-muted-foreground">Projects</p>
-                </div>
               </div>
             </motion.div>
 

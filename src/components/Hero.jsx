@@ -1,4 +1,19 @@
-import { Code, Palette, Zap, ChevronDown, Terminal, Layers, Rocket, Download, Mail, FolderGit2 } from 'lucide-react';
+import {
+  Code,
+  Palette,
+  Zap,
+  ChevronDown,
+  Terminal,
+  Layers,
+  Rocket,
+  Download,
+  Mail,
+  FolderGit2,
+  Sparkles,
+  Brain,
+  Database,
+  ShieldCheck,
+} from 'lucide-react';
 import { motion } from 'motion/react';
 import { ImageWithFallback } from './figma/ImageWithFallback.jsx';
 import { useState, useEffect } from 'react';
@@ -29,15 +44,41 @@ export function Hero({ setActiveSection }) {
     },
   ];
 
+  const highlightPills = [
+    { icon: Sparkles, text: 'Creative engineering & research' },
+    { icon: Brain, text: 'Systems thinking mindset' },
+    { icon: Database, text: 'Backend + API craftsmanship' },
+    { icon: ShieldCheck, text: 'Production-ready delivery' },
+  ];
+
+  const stats = [
+    { value: '12+', label: 'Projects shipped' },
+    { value: '5', label: 'Backend APIs built' },
+    { value: '3', label: 'Research explorations' },
+  ];
+
   return (
-    <section className="w-full py-8 md:py-12">
-      <div className="container mx-auto max-w-6xl px-4">
+    <section className="w-full py-12 md:py-16 relative overflow-hidden hero-surface">
+      <div className="absolute inset-0 bg-grid opacity-70" aria-hidden />
+      <div className="blur-blob blob-left" aria-hidden />
+      <div className="blur-blob blob-right" aria-hidden />
+
+      <div className="container mx-auto max-w-6xl px-4 relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
+          <div className="flex flex-wrap justify-center gap-3 mb-6">
+            {highlightPills.map((pill) => (
+              <span key={pill.text} className="pill pill-soft inline-flex items-center gap-2">
+                <pill.icon size={16} />
+                {pill.text}
+              </span>
+            ))}
+          </div>
+
           {/* Profile Photo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
@@ -108,6 +149,23 @@ export function Hero({ setActiveSection }) {
           <p className="text-slate-600 max-w-2xl mx-auto mb-8">
             Hi, I'm <span className="text-blue-600">Yihune</span> — a 4th-year Software Engineering student at Haramaya University with a deep passion for building things that matter. I don't just write code — I craft experiences, solve problems, and bring ideas to life through technology.
           </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto mb-10">
+            {stats.map((stat, idx) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 * idx }}
+                className="stat-card"
+              >
+                <div className="text-3xl font-bold text-slate-900" style={{ color: 'var(--primary)' }}>
+                  {stat.value}
+                </div>
+                <p className="text-slate-600 text-sm">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
           
           {/* Action Buttons */}
           <motion.div

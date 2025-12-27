@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ThemeToggle } from './ThemeToggle.jsx';
+import { ThemeSelector } from './ThemeSelector.jsx';
 
 export function Header({ activeSection, setActiveSection }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,20 +17,16 @@ export function Header({ activeSection, setActiveSection }) {
   }, []);
 
   const handleNavClick = (id) => {
-    // Set the active section first
-    setActiveSection(id);
-
-    // If mobile menu is open and the user clicked the same active item,
-    // don't close the menu (prevents accidental toggle-back behavior).
-    if (isMobileMenuOpen && activeSection === id) {
-      // keep menu open
-      return;
-    }
-
-    // Close mobile menu after navigation on mobile
+    // Close mobile menu first
     setIsMobileMenuOpen(false);
-    // Scroll to top to ensure header is visible
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Set the active section
+    setActiveSection(id);
+    
+    // Smooth scroll to top
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
   };
 
   const navItems = [
@@ -37,6 +34,7 @@ export function Header({ activeSection, setActiveSection }) {
     { id: 'about', label: 'About' },
     { id: 'projects', label: 'Projects' },
     { id: 'contact', label: 'Contact' },
+    { id: 'admin', label: 'Admin' },
   ];
 
   return (
@@ -77,6 +75,7 @@ export function Header({ activeSection, setActiveSection }) {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3 ml-3">
+            <ThemeSelector />
             <ThemeToggle />
           </div>
 
@@ -93,41 +92,52 @@ export function Header({ activeSection, setActiveSection }) {
         {/* Mobile Navigation */}
         <AnimatePresence>
           {isMobileMenuOpen && (
-            <motion.ul
-              initial={{ opacity: 0, height: 0, y: -10 }}
-              animate={{ opacity: 1, height: 'auto', y: 0 }}
-              exit={{ opacity: 0, height: 0, y: -10 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="md:hidden mt-4 space-y-3 pb-4 bg-slate-800/80 rounded-lg px-4 py-3 overflow-hidden border border-slate-700"
-            >
-              {navItems.map((item, index) => (
-                <motion.li
-                  key={item.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.3 }}
-                >
-                  <button
-                    onClick={() => handleNavClick(item.id)}
-                    className={`block w-full text-left py-2 px-3 rounded-md transition-all duration-300 font-poppins nav-link ${
-                      activeSection === item.id
-                        ? 'nav-link--active mobile-nav-active nav-underline'
-                        : ''
-                    }`}
-                    style={
-                      activeSection === item.id
-                        ? { color: 'var(--primary)', background: 'color-mix(in oklab, var(--primary) 10%, transparent)' }
-                        : undefined
-                    }
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[90] md:hidden"
+                onClick={() => setIsMobileMenuOpen(false)}
+              />
+              <motion.ul
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                className="md:hidden absolute left-0 right-0 mt-4 space-y-3 pb-4 bg-slate-800/95 rounded-lg px-4 py-3 border border-slate-700 z-[100]"
+              >
+                {navItems.map((item, index) => (
+                  <motion.li
+                    key={item.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.08, duration: 0.25 }}
                   >
-                    {item.label}
-                  </button>
-                </motion.li>
-              ))}
-              <li className="pt-2">
-                <ThemeToggle />
-              </li>
-            </motion.ul>
+                    <button
+                      onClick={() => handleNavClick(item.id)}
+                      className={`block w-full text-left py-2 px-3 rounded-md transition-all duration-300 font-poppins nav-link ${
+                        activeSection === item.id
+                          ? 'nav-link--active mobile-nav-active nav-underline'
+                          : ''
+                      }`}
+                      style={
+                        activeSection === item.id
+                          ? { color: 'var(--primary)', background: 'color-mix(in oklab, var(--primary) 10%, transparent)' }
+                          : undefined
+                      }
+                    >
+                      {item.label}
+                    </button>
+                  </motion.li>
+                ))}
+                <li className="pt-2 flex items-center gap-2">
+                  <ThemeSelector />
+                  <ThemeToggle />
+                </li>
+              </motion.ul>
+            </>
           )}
         </AnimatePresence>
       </nav>

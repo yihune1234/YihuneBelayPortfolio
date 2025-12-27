@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
-import { motion } from 'motion/react';
-import { Mail, Trash2, Eye, Clock, CheckCircle, Inbox, MailOpen, Archive, TrendingUp, Search, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Mail, Trash2, Eye, Clock, CheckCircle, Inbox, MailOpen, Archive, TrendingUp, Search, Check, Send, User, MessageSquare } from 'lucide-react';
 
 export function MessagesManager() {
   const [messages, setMessages] = useState([]);
@@ -28,7 +28,7 @@ export function MessagesManager() {
   const handleMarkAsRead = async (id) => {
     const token = localStorage.getItem('adminToken');
     try {
-      await fetch(`https://portfoliobackend-a6ah.onrender.com/${id}/read`, {
+      await fetch(`https://portfoliobackend-a6ah.onrender.com/api/messages/${id}/read`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -80,201 +80,138 @@ export function MessagesManager() {
       const bySearch = !term
         ? true
         : [msg.name, msg.email, msg.subject, msg.message].some((field) =>
-            (field || '').toLowerCase().includes(term)
-          );
+          (field || '').toLowerCase().includes(term)
+        );
       return byFilter && bySearch;
     });
   }, [messages, filter, search]);
 
   const unreadCount = messages.filter(m => !m.isRead).length;
-  const readCount = messages.filter(m => m.isRead).length;
-  const total = messages.length;
 
   return (
-    <div className="space-y-6">
-      {/* Hero */}
-      <div className="message-hero">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white mb-2">
-            Inbox Management
-            <span className="badge-soft">{unreadCount} Unread</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white">Messages</h2>
-          <p className="text-white/85 mt-1">Manage your contact form submissions and inquiries in one place.</p>
-          <div className="flex gap-3 flex-wrap mt-4">
-            <div className="stat-chip">
-              <Inbox className="w-4 h-4" />
-              <div>
-                <p className="text-xs text-slate-200">Total</p>
-                <p className="text-lg font-semibold text-white">{total}</p>
-              </div>
-            </div>
-            <div className="stat-chip">
-              <Mail className="w-4 h-4" />
-              <div>
-                <p className="text-xs text-slate-200">Unread</p>
-                <p className="text-lg font-semibold text-white">{unreadCount}</p>
-              </div>
-            </div>
-            <div className="stat-chip">
-              <MailOpen className="w-4 h-4" />
-              <div>
-                <p className="text-xs text-slate-200">Read</p>
-                <p className="text-lg font-semibold text-white">{readCount}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button onClick={handleMarkAllAsRead} className="mark-all-btn">
-          <Check className="w-4 h-4" />
-          Mark all read
-        </button>
-      </div>
-
-      {/* Filters + search */}
-      <div className="message-filters">
-        <div className="filter-tabs">
-          <button onClick={() => setFilter('all')} className={`filter-pill ${filter === 'all' ? 'is-active' : ''}`}>
-            All ({total})
-          </button>
-          <button onClick={() => setFilter('unread')} className={`filter-pill ${filter === 'unread' ? 'is-active' : ''}`}>
-            Unread ({unreadCount})
-          </button>
-          <button onClick={() => setFilter('read')} className={`filter-pill ${filter === 'read' ? 'is-active' : ''}`}>
-            Read ({readCount})
-          </button>
-        </div>
-        <div className="search-input">
-          <Search className="w-4 h-4 text-slate-400" />
+    <div className="space-y-8">
+      {/* Search and Filters */}
+      <div className="flex flex-col md:flex-row gap-6 md:items-center justify-between">
+        <div className="relative flex-1 max-w-md group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-[var(--primary)] transition-colors" />
           <input
             type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-12 pr-4 py-3 glass rounded-2xl outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all font-medium"
             placeholder="Search messages..."
-            className="flex-1 bg-transparent outline-none"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
           />
+        </div>
+
+        <div className="flex gap-2">
+          {['all', 'unread', 'read'].map(f => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${filter === f ? 'bg-[var(--primary)] text-white' : 'glass hover:bg-white/10'
+                }`}
+            >
+              {f}
+            </button>
+          ))}
+          <button onClick={handleMarkAllAsRead} className="px-5 py-2.5 rounded-xl glass hover:bg-green-500/10 hover:text-green-500 transition-all text-xs font-black uppercase tracking-widest">
+            Mark All Read
+          </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Messages List */}
-        <div className="space-y-3">
-          {filteredMessages.length === 0 ? (
-            <div className="bg-white dark:bg-slate-800 rounded-xl p-12 text-center border-2 border-dashed border-slate-300 dark:border-slate-700">
-              <Archive className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-              <p className="text-slate-500 dark:text-slate-400 font-medium">No messages found</p>
-              <p className="text-slate-400 dark:text-slate-500 text-sm mt-2">Messages will appear here when users contact you</p>
-            </div>
-          ) : (
-            filteredMessages.map((message) => (
+      <div className="grid lg:grid-cols-2 gap-8 items-start">
+        {/* List */}
+        <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+          <AnimatePresence mode="popLayout">
+            {filteredMessages.map((msg, idx) => (
               <motion.div
-                key={message._id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
+                key={msg._id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ delay: idx * 0.05 }}
                 onClick={() => {
-                  setSelectedMessage(message);
-                  if (!message.isRead) handleMarkAsRead(message._id);
+                  setSelectedMessage(msg);
+                  if (!msg.isRead) handleMarkAsRead(msg._id);
                 }}
-                className={`message-card ${!message.isRead ? 'is-unread' : ''} ${
-                  selectedMessage?._id === message._id ? 'is-selected' : ''
-                }`}
+                className={`glass-card p-6 cursor-pointer transition-all border-l-4 ${selectedMessage?._id === msg._id ? 'border-[var(--primary)] bg-[var(--primary)]/5' : 'border-transparent'
+                  } ${!msg.isRead ? 'shadow-lg shadow-[var(--primary)]/10 ring-1 ring-[var(--primary)]/20' : ''}`}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      message.isRead 
-                        ? 'bg-slate-100 dark:bg-slate-700' 
-                        : 'bg-gradient-to-br from-blue-500 to-indigo-600'
-                    }`}>
-                      <Mail className={`w-5 h-5 ${message.isRead ? 'text-slate-400' : 'text-white'}`} />
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex gap-3">
+                    <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center font-black text-[var(--primary)]">
+                      {msg.name[0].toUpperCase()}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-800 dark:text-slate-100">{message.name}</h3>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">{message.email}</p>
+                      <h4 className="font-bold text-sm">{msg.name}</h4>
+                      <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground">{new Date(msg.createdAt).toLocaleDateString()}</p>
                     </div>
                   </div>
-                  {!message.isRead && (
-                    <span className="pill pill-soft">New</span>
-                  )}
+                  {!msg.isRead && <span className="w-2 h-2 rounded-full bg-[var(--primary)] animate-pulse" />}
                 </div>
-                <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">{message.subject}</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">{message.message}</p>
-                <div className="flex items-center gap-2 mt-3 text-xs text-slate-400 dark:text-slate-500">
-                  <Clock className="w-3 h-3" />
-                  {new Date(message.createdAt).toLocaleString()}
-                </div>
+                <h5 className="font-bold text-sm mb-1">{msg.subject}</h5>
+                <p className="text-xs text-muted-foreground line-clamp-2">{msg.message}</p>
               </motion.div>
-            ))
+            ))}
+          </AnimatePresence>
+
+          {filteredMessages.length === 0 && (
+            <div className="glass-card p-20 text-center flex flex-col items-center">
+              <Inbox size={48} className="text-muted-foreground mb-4 opacity-20" />
+              <p className="font-bold text-muted-foreground">No messages found.</p>
+            </div>
           )}
         </div>
 
-        {/* Message Detail */}
-        <div className="lg:sticky lg:top-24 h-fit">
-          {selectedMessage ? (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-xl border-2 border-slate-200 dark:border-slate-700"
-            >
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'var(--primary)' }}>
-                    <span className="text-white font-bold text-lg">{selectedMessage.name.charAt(0).toUpperCase()}</span>
+        {/* Detail Panel */}
+        <div className="lg:sticky lg:top-24">
+          <AnimatePresence mode="wait">
+            {selectedMessage ? (
+              <motion.div
+                key={selectedMessage._id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="glass-card p-8 md:p-10 space-y-8"
+              >
+                <div className="flex justify-between items-start">
+                  <div className="flex gap-4">
+                    <div className="w-16 h-16 rounded-3xl bg-[var(--primary)] text-white flex items-center justify-center font-black text-2xl shadow-xl shadow-[var(--primary)]/30">
+                      {selectedMessage.name[0].toUpperCase()}
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-black">{selectedMessage.name}</h3>
+                      <p className="text-muted-foreground font-bold">{selectedMessage.email}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">{selectedMessage.name}</h3>
-                    <a href={`mailto:${selectedMessage.email}`} className="text-blue-500 hover:underline text-sm">
-                      {selectedMessage.email}
+                  <button onClick={() => handleDelete(selectedMessage._id)} className="p-3 glass rounded-xl text-red-500 hover:bg-red-500 hover:text-white transition-all">
+                    <Trash2 size={20} />
+                  </button>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="p-6 glass rounded-2xl bg-white/5">
+                    <p className="text-[10px] uppercase font-black tracking-[0.2em] text-muted-foreground mb-4">Message Content</p>
+                    <h4 className="font-black text-lg mb-4">{selectedMessage.subject}</h4>
+                    <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{selectedMessage.message}</p>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <a href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject}`} className="btn-primary flex-1 flex items-center justify-center gap-3">
+                      <Send size={18} /> Reply via Email
                     </a>
                   </div>
                 </div>
-                {selectedMessage.isRead ? (
-                  <CheckCircle className="w-6 h-6 text-green-500" />
-                ) : (
-                  <Eye className="w-6 h-6 text-blue-500" />
-                )}
+              </motion.div>
+            ) : (
+              <div className="glass-card p-20 text-center flex flex-col items-center justify-center h-[50vh]">
+                <MessageSquare size={64} className="text-muted-foreground mb-6 opacity-10" />
+                <h3 className="text-xl font-bold text-muted-foreground mb-2">Select a Conversation</h3>
+                <p className="text-sm text-muted-foreground max-w-xs">Pick a message from the list to view the full discussion and respond.</p>
               </div>
-
-              <div className="mb-4 pb-4 border-b border-slate-200 dark:border-slate-700">
-                <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Subject</p>
-                <p className="font-semibold text-slate-800 dark:text-slate-100">{selectedMessage.subject}</p>
-              </div>
-
-              <div className="mb-4 pb-4 border-b border-slate-200 dark:border-slate-700">
-                <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">Message</p>
-                <p className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">{selectedMessage.message}</p>
-              </div>
-
-              <div className="mb-6">
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Received: {new Date(selectedMessage.createdAt).toLocaleString()}
-                </p>
-              </div>
-
-              <div className="flex gap-3">
-                <a
-                  href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject}`}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-white rounded-xl hover:shadow-lg transition-all font-medium"
-                  style={{ background: 'var(--primary)' }}
-                >
-                  <Mail className="w-4 h-4" />
-                  Reply
-                </a>
-                <button
-                  onClick={() => handleDelete(selectedMessage._id)}
-                  className="px-4 py-3 bg-red-500 text-white rounded-xl hover:bg-red-600 hover:shadow-lg transition-all"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            </motion.div>
-          ) : (
-            <div className="bg-white dark:bg-slate-800 rounded-xl p-12 text-center border-2 border-dashed border-slate-300 dark:border-slate-700">
-              <Mail className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-              <p className="text-slate-500 dark:text-slate-400 font-medium">Select a message to view details</p>
-              <p className="text-slate-400 dark:text-slate-500 text-sm mt-2">Click on any message from the list</p>
-            </div>
-          )}
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>

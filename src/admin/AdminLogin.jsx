@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Lock, User, Eye, EyeOff, ShieldCheck, KeyRound, Sparkles } from 'lucide-react';
+import { Lock, User, Eye, EyeOff, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
 
 export function AdminLogin({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -28,123 +28,102 @@ export function AdminLogin({ onLogin }) {
         localStorage.setItem('adminUser', JSON.stringify(data.admin));
         onLogin(data.token, data.admin);
       } else {
-        setError(data.message || 'Login failed');
+        setError(data.message || 'Access denied. Please check your credentials.');
       }
     } catch (err) {
-      setError('Connection error. Please try again.');
+      setError('Connection error. Server may be down.');
     } finally {
       setLoading(false);
     }
   };
 
-  const highlights = [
-    { icon: ShieldCheck, title: 'Secure access', text: 'JWT-protected admin area' },
-    { icon: KeyRound, title: 'API ready', text: 'Uses existing Express endpoints' },
-    { icon: Sparkles, title: 'Live editing', text: 'Manage projects & messages' },
-  ];
-
   return (
-    <div className="min-h-[90vh] admin-auth-shell px-4 py-12">
-      <div className="max-w-6xl mx-auto auth-grid">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="auth-panel"
-        >
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: 'var(--primary)' }}>
-              <Lock className="w-7 h-7 text-white" />
-            </div>
-            <div>
-              <p className="text-sm text-slate-500">Admin Access</p>
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Sign in to Dashboard</h1>
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#020617] p-6 relative overflow-hidden">
+      {/* Background blobs */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--primary)]/10 blur-[120px] rounded-full -z-10" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 blur-[120px] rounded-full -z-10" />
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full max-w-md glass-card p-10 md:p-12"
+      >
+        <div className="text-center mb-10">
+          <div className="w-20 h-20 rounded-3xl bg-[var(--primary)]/10 flex items-center justify-center mx-auto mb-6">
+            <ShieldCheck size={40} className="text-[var(--primary)]" />
+          </div>
+          <h1 className="text-3xl font-black mb-2 tracking-tight">Admin Portal</h1>
+          <p className="text-muted-foreground font-medium">Please sign in to continue</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Username</label>
+            <div className="relative group">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-[var(--primary)] transition-colors" />
+              <input
+                type="text"
+                required
+                className="w-full pl-12 pr-4 py-4 glass rounded-2xl outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all font-medium"
+                placeholder="Admin username"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+              />
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="field">
-              <label className="field-label">Username</label>
-              <div className="field-wrapper">
-                <User className="field-icon" />
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="field-input"
-                  placeholder="Enter admin username"
-                  autoComplete="username"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="field">
-              <label className="field-label">Password</label>
-              <div className="field-wrapper">
-                <Lock className="field-icon" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="field-input"
-                  placeholder="••••••••"
-                  autoComplete="current-password"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="toggle-visibility"
-                  aria-label="Toggle password visibility"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            {error && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="alert error"
+          <div className="space-y-2">
+            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Password</label>
+            <div className="relative group">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-[var(--primary)] transition-colors" />
+              <input
+                type={showPassword ? 'text' : 'password'}
+                required
+                className="w-full pl-12 pr-12 py-4 glass rounded-2xl outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all font-medium"
+                placeholder="••••••••"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
               >
-                {error}
-              </motion.div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn w-full flex items-center justify-center gap-2"
-            >
-              {loading ? 'Authenticating...' : 'Login as Admin'}
-            </button>
-      
-          </form>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="auth-sidebar"
-        >
-          <div className="sidebar-inner">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="pill pill-soft inline-flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5" />
-                Secure zone
-              </div>
-            </div>
-
-            <div className="status-chip">
-              <span className="dot" />
-              Waiting for admin login
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
           </div>
-        </motion.div>
-      </div>
+
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 rounded-2xl bg-red-500/10 text-red-500 text-sm font-bold text-center border border-red-500/20"
+            >
+              {error}
+            </motion.div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary w-full !py-5 flex items-center justify-center gap-3 text-lg font-black tracking-tight"
+          >
+            {loading ? 'Authenticating...' : (
+              <>
+                Sign In <ArrowRight size={20} />
+              </>
+            )}
+          </button>
+        </form>
+
+        <div className="mt-10 pt-8 border-t border-white/10 text-center">
+          <p className="text-xs text-muted-foreground flex items-center justify-center gap-2 font-bold uppercase tracking-widest">
+            <Sparkles size={14} className="text-[var(--primary)]" />
+            Secure Dashboard System
+          </p>
+        </div>
+      </motion.div>
     </div>
   );
 }

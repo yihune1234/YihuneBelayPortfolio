@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ThemeToggle } from './ThemeToggle.jsx';
 import { ThemeSelector } from './ThemeSelector.jsx';
@@ -17,16 +17,13 @@ export function Header({ activeSection, setActiveSection }) {
   }, []);
 
   const handleNavClick = (id) => {
-    // Close mobile menu first
     setIsMobileMenuOpen(false);
-    
-    // Set the active section
     setActiveSection(id);
-    
+
     // Smooth scroll to top
-    setTimeout(() => {
+    if (id !== 'admin') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 100);
+    }
   };
 
   const navItems = [
@@ -34,115 +31,117 @@ export function Header({ activeSection, setActiveSection }) {
     { id: 'about', label: 'About' },
     { id: 'projects', label: 'Projects' },
     { id: 'contact', label: 'Contact' },
-    { id: 'admin', label: 'Admin' },
   ];
 
   return (
     <header
-
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
-        isScrolled || isMobileMenuOpen ? 'bg-slate-800/98 backdrop-blur-sm shadow-lg shadow-blue-600/10' : 'bg-slate-800/95 backdrop-blur-sm shadow-md shadow-blue-600/10'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${isScrolled ? 'glass-card border-none shadow-xl py-3' : 'bg-transparent py-6'
+        }`}
     >
-      <nav className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={() => handleNavClick('home')}
-            className="header-brand transition-colors font-poppins font-bold text-2xl"
+      <div className="container-custom flex items-center justify-between">
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          onClick={() => handleNavClick('home')}
+          className="relative group flex items-center gap-3 px-4 py-2 glass-card rounded-2xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-[var(--primary)]/20"
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            className="text-[var(--primary)] flex items-center justify-center"
           >
-           Yihune
-          </button>
+            <Globe size={20} className="drop-shadow-[0_0_8px_var(--primary)]" />
+          </motion.div>
+          <div className="flex items-center gap-2 relative z-10">
+            <img src="/images/yihune .jpg" alt="Y B Logo" className="h-8 w-auto object-contain" />
+            <span className="text-xl font-black tracking-tighter uppercase">
+              Yihune<span className="text-[var(--primary)]">.</span>
+            </span>
+          </div>
+          {/* Animated Glow Border */}
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-[var(--primary)] via-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-40 blur-sm transition-opacity duration-500" />
+        </motion.button>
 
-          {/* Desktop Navigation */}
-          <ul className="hidden md:flex items-center space-x-10">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8">
+          <ul className="flex items-center gap-6">
             {navItems.map((item) => (
               <li key={item.id}>
                 <button
                   onClick={() => handleNavClick(item.id)}
-                  className={`transition-all duration-300 relative pb-1 font-poppins nav-link ${
-                    activeSection === item.id ? 'nav-link--active nav-underline' : ''
-                  }`}
-                  style={activeSection === item.id ? { color: 'var(--primary)' } : undefined}
+                  className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
                 >
                   {item.label}
-                  {activeSection === item.id && (
-                    <span className="absolute -bottom-2 left-0 right-0 nav-underline" style={{ background: 'var(--primary)' }}></span>
-                  )}
                 </button>
               </li>
             ))}
           </ul>
 
-          {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-3 ml-3">
+          <div className="h-6 w-px bg-border mx-2" />
+
+          <div className="flex items-center gap-3">
             <ThemeSelector />
             <ThemeToggle />
           </div>
 
-          {/* Mobile Menu Button */}
+          <button
+            onClick={() => handleNavClick('admin')}
+            className="ml-2 btn-primary !py-2 !px-5 text-sm"
+          >
+            Admin
+          </button>
+        </nav>
+
+        {/* Mobile Menu Button */}
+        <div className="flex items-center gap-4 md:hidden">
+          <ThemeToggle />
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-slate-50 hover:text-blue-400 transition-colors"
+            className="p-2 glass rounded-xl"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <>
-              {/* Full-screen dim background so menu is clearly above all content */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[120] md:hidden"
-                onClick={() => setIsMobileMenuOpen(false)}
-              />
-              {/* Fixed dropdown panel anchored below header */}
-              <motion.ul
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25, ease: 'easeInOut' }}
-                className="md:hidden fixed left-4 right-4 top-[72px] space-y-3 pb-4 bg-slate-800/95 rounded-xl px-4 py-3 border border-slate-700 z-[130] shadow-xl"
-              >
-                {navItems.map((item, index) => (
-                  <motion.li
-                    key={item.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.08, duration: 0.25 }}
-                  >
+      {/* Mobile Navigation */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden glass border-t border-white/10 overflow-hidden"
+          >
+            <div className="container-custom py-8 flex flex-col gap-6">
+              <ul className="flex flex-col gap-4">
+                {navItems.map((item) => (
+                  <li key={item.id}>
                     <button
                       onClick={() => handleNavClick(item.id)}
-                      className={`block w-full text-left py-2 px-3 rounded-md transition-all duration-300 font-poppins nav-link ${
-                        activeSection === item.id
-                          ? 'nav-link--active mobile-nav-active nav-underline'
-                          : ''
-                      }`}
-                      style={
-                        activeSection === item.id
-                          ? { color: 'var(--primary)', background: 'color-mix(in oklab, var(--primary) 10%, transparent)' }
-                          : undefined
-                      }
+                      className={`text-2xl font-bold transition-colors ${activeSection === item.id ? 'text-[var(--primary)]' : 'text-muted-foreground'
+                        }`}
                     >
                       {item.label}
                     </button>
-                  </motion.li>
+                  </li>
                 ))}
-                <li className="pt-2 flex items-center gap-2">
-                  <ThemeSelector />
-                  <ThemeToggle />
-                </li>
-              </motion.ul>
-            </>
-          )}
-        </AnimatePresence>
-      </nav>
+              </ul>
+
+              <div className="flex items-center gap-4 pt-4 border-t border-white/10">
+                <ThemeSelector />
+                <button
+                  onClick={() => handleNavClick('admin')}
+                  className="btn-primary flex-1"
+                >
+                  Admin Access
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

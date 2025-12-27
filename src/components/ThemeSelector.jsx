@@ -52,12 +52,12 @@ export function ThemeSelector() {
   }, []);
 
   const applyTheme = (themeId) => {
-    const theme = themes.find(t => t.id === themeId);
-    if (theme) {
-      document.documentElement.style.setProperty('--primary', theme.primary);
-      document.documentElement.style.setProperty('--primary-dark', theme.secondary);
-      document.documentElement.style.setProperty('--primary-light', theme.accent);
-    }
+    // Remove all theme classes first
+    const themeClasses = ['theme-blue', 'theme-purple', 'theme-green', 'theme-orange'];
+    document.documentElement.classList.remove(...themeClasses);
+    
+    // Add new theme class
+    document.documentElement.classList.add(`theme-${themeId}`);
   };
 
   const handleThemeChange = (themeId) => {
@@ -73,103 +73,57 @@ export function ThemeSelector() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+        className="p-2 rounded-xl glass hover:bg-white/20 transition-all active:scale-95"
         aria-label="Change theme"
         title="Change color theme"
       >
-        <Palette className="w-5 h-5" style={{ color: currentThemeData?.primary }} />
+        <Palette className="w-5 h-5" style={{ color: 'var(--primary)' }} />
       </button>
 
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Backdrop */}
             <div
               className="fixed inset-0 z-40"
               onClick={() => setIsOpen(false)}
             />
 
-            {/* Theme Selector Panel */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -10 }}
-              transition={{ duration: 0.2 }}
-              className="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 z-50 overflow-hidden"
+              className="absolute right-0 mt-4 w-72 md:w-80 glass-card p-4 z-50 rounded-2xl border border-white/20"
             >
-              <div className="p-4 border-b border-slate-200 dark:border-slate-700">
-                <h3 className="font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                  <Palette className="w-5 h-5" />
-                  Choose Your Theme
+              <div className="mb-4">
+                <h3 className="font-bold text-lg flex items-center gap-2">
+                  <Palette className="w-5 h-5 text-[var(--primary)]" />
+                  Color Palette
                 </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                  Select a color scheme that matches your style
+                <p className="text-xs text-muted-foreground mt-1">
+                  Personalize your viewing experience
                 </p>
               </div>
 
-              <div className="p-3 space-y-2 max-h-96 overflow-y-auto">
+              <div className="grid grid-cols-2 gap-3">
                 {themes.map((theme) => (
-                  <motion.button
+                  <button
                     key={theme.id}
                     onClick={() => handleThemeChange(theme.id)}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className={`w-full p-3 rounded-lg border-2 transition-all text-left ${
+                    className={`p-3 rounded-xl border-2 transition-all text-left flex flex-col gap-2 ${
                       currentTheme === theme.id
-                        ? 'border-current shadow-md'
-                        : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                        ? 'border-[var(--primary)] bg-[var(--primary)]/5'
+                        : 'border-transparent hover:border-white/20 bg-black/5 dark:bg-white/5'
                     }`}
-                    style={{
-                      borderColor: currentTheme === theme.id ? theme.primary : undefined
-                    }}
                   >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`w-10 h-10 rounded-lg bg-gradient-to-br ${theme.gradient} shadow-md`}
-                        />
-                        <div>
-                          <div className="font-semibold text-slate-800 dark:text-slate-100">
-                            {theme.name}
-                          </div>
-                          <div className="text-xs text-slate-600 dark:text-slate-400">
-                            {theme.description}
-                          </div>
-                        </div>
-                      </div>
-                      {currentTheme === theme.id && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          className="w-6 h-6 rounded-full flex items-center justify-center"
-                          style={{ backgroundColor: theme.primary }}
-                        >
-                          <Check className="w-4 h-4 text-white" />
-                        </motion.div>
-                      )}
+                    <div
+                      className={`w-full h-12 rounded-lg bg-gradient-to-br ${theme.gradient} shadow-sm`}
+                    />
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold">{theme.name}</span>
+                      {currentTheme === theme.id && <Check className="w-3 h-3 text-[var(--primary)]" />}
                     </div>
-                    <div className="flex gap-2">
-                      <div
-                        className="w-8 h-2 rounded-full"
-                        style={{ backgroundColor: theme.primary }}
-                      />
-                      <div
-                        className="w-8 h-2 rounded-full"
-                        style={{ backgroundColor: theme.secondary }}
-                      />
-                      <div
-                        className="w-8 h-2 rounded-full"
-                        style={{ backgroundColor: theme.accent }}
-                      />
-                    </div>
-                  </motion.button>
+                  </button>
                 ))}
-              </div>
-
-              <div className="p-3 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
-                <p className="text-xs text-slate-600 dark:text-slate-400 text-center">
-                  Your theme preference is saved automatically
-                </p>
               </div>
             </motion.div>
           </>

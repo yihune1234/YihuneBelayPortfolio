@@ -5,9 +5,12 @@ import { Hero } from './components/Hero.jsx';
 import { About } from './components/About.jsx';
 import { Projects } from './components/Projects.jsx';
 import { Contact } from './components/Contact.jsx';
+import { Footer } from './components/Footer.jsx';
 import { TelegramFloatingButton } from './components/TelegramFloatingButton.jsx';
 import { AdminLogin } from './admin/AdminLogin.jsx';
 import { AdminDashboard } from './admin/AdminDashboard.jsx';
+import { PhotoLog } from './components/PhotoLog.jsx';
+
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('home');
@@ -15,19 +18,23 @@ export default function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
-    if (token && activeSection === 'admin') {
+    if (token) {
       setIsAdminAuthenticated(true);
     }
-    
-    // Smooth scroll to top when section changes
+
+    // Check for saved theme
+    const savedTheme = localStorage.getItem('portfolioTheme') || 'blue';
+    document.documentElement.classList.add(`theme-${savedTheme}`);
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [activeSection]);
+  }, []);
 
   const handleAdminLogin = (token, admin) => {
     setIsAdminAuthenticated(true);
   };
 
   const handleAdminLogout = () => {
+    localStorage.removeItem('adminToken');
     setIsAdminAuthenticated(false);
     setActiveSection('home');
   };
@@ -42,53 +49,44 @@ export default function App() {
     }
 
     const sections = {
-      home: <Hero setActiveSection={setActiveSection} />,
-      about: <About setActiveSection={setActiveSection} />,
-      projects: <Projects setActiveSection={setActiveSection} />,
-      contact: <Contact setActiveSection={setActiveSection} />
+      home: (
+        <>
+          <Hero setActiveSection={setActiveSection} />
+          <PhotoLog />
+        </>
+      ),
+
+      about: <About />,
+      projects: <Projects />,
+      contact: <Contact />
     };
     return sections[activeSection] || sections.home;
   };
 
+  const isAdminView = activeSection === 'admin' && isAdminAuthenticated;
+
   return (
-    <div className="min-h-screen">
-      {activeSection !== 'admin' || !isAdminAuthenticated ? (
+    <div className="min-h-screen flex flex-col">
+      {!isAdminView && (
         <Header activeSection={activeSection} setActiveSection={setActiveSection} />
-      ) : null}
-      
-      {activeSection === 'admin' && isAdminAuthenticated ? (
+      )}
+
+      <main className={`flex-1 ${!isAdminView ? 'pt-20' : ''}`}>
         <AnimatePresence mode="wait">
           <motion.div
-            key={activeSection}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            key={activeSection + (isAdminAuthenticated ? '-auth' : '')}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
           >
             {renderSection()}
           </motion.div>
         </AnimatePresence>
-      ) : (
-        <main className="min-h-screen flex items-center justify-center px-4 md:px-6 pt-20 md:pt-24">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSection}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{
-                duration: 0.4,
-                ease: "easeInOut"
-              }}
-              className="w-full max-w-7xl mx-auto"
-            >
-              {renderSection()}
-            </motion.div>
-          </AnimatePresence>
-        </main>
-      )}
-      
-      {activeSection !== 'admin' && <TelegramFloatingButton />}
+      </main>
+
+      {!isAdminView && <Footer setActiveSection={setActiveSection} />}
+      {!isAdminView && <TelegramFloatingButton />}
     </div>
   );
 }

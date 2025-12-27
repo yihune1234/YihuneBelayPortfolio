@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { Sun, Moon } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState('light');
@@ -24,9 +26,26 @@ export function ThemeToggle() {
   };
 
   return (
-    <button onClick={toggle} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-200 bg-white/95 text-slate-800 hover:bg-slate-50 transition-colors">
-      <span className="w-2 h-2 rounded-full" style={{ background: theme === 'dark' ? 'var(--primary)' : 'var(--secondary)' }} />
-      <span className="text-sm">{theme === 'dark' ? 'Dark' : 'Light'}</span>
+    <button
+      onClick={toggle}
+      className="p-2 rounded-xl glass hover:bg-white/20 transition-all active:scale-95 group relative overflow-hidden"
+      aria-label="Toggle theme"
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={theme}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -20, opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          {theme === 'dark' ? (
+            <Sun className="w-5 h-5 text-yellow-500" />
+          ) : (
+            <Moon className="w-5 h-5 text-indigo-500" />
+          )}
+        </motion.div>
+      </AnimatePresence>
     </button>
   );
 }

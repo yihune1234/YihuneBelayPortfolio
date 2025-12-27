@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Mail, Linkedin, Github, Send } from 'lucide-react';
+import { Mail, Linkedin, Github, Send, Phone, MapPin, MessageSquare } from 'lucide-react';
 
-export function Contact({ setActiveSection }) {
+export function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,7 +18,7 @@ export function Contact({ setActiveSection }) {
     setStatus({ type: '', message: '' });
 
     try {
-      const response = await fetch('http://localhost:5001/api/messages', {
+      const response = await fetch('https://portfoliobackend-a6ah.onrender.com/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -37,191 +37,158 @@ export function Contact({ setActiveSection }) {
     }
   };
 
+  const contactInfo = [
+    { icon: Mail, label: 'Email', value: 'yihunebelay859@gmail.com', href: 'mailto:yihunebelay859@gmail.com' },
+    { icon: Phone, label: 'Phone ethio telecom', value: '+251987414282', href: 'tel:+251987414282' },
+    { icon: Phone, label: 'Phone safaricom', value: '+251721874182', href: 'tel:+251721874182' },
+
+    { icon: MapPin, label: 'Location', value: 'Addis Ababa, Ethiopia', href: '#' },
+  ];
+
   const socialLinks = [
-    {
-      name: 'Telegram',
-      icon: Send,
-      url: 'https://t.me/Y13bel',
-      color: 'hover:text-[#0088cc]',
-    },
-    {
-      name: 'Email',
-      icon: Mail,
-      url: 'mailto:yihunebelay859@gmail.com',
-      color: 'hover:text-red-500',
-    },
-    {
-      name: 'LinkedIn',
-      icon: Linkedin,
-      url: 'https://www.linkedin.com/in/yihune-belay-30b0a4383',
-      color: 'hover:text-[#0077b5]',
-    },
-    {
-      name: 'GitHub',
-      icon: Github,
-      url: 'https://github.com/yihune1234',
-      color: 'hover:text-slate-900',
-    },
+    { icon: Github, href: 'https://github.com/yihune1234', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/yihune-belay-30b0a4383', label: 'LinkedIn' },
+    { icon: Send, href: 'https://t.me/Y13bel', label: 'Telegram' },
   ];
 
   return (
-    <section className="w-full py-8 md:py-12">
-      <div className="container mx-auto max-w-6xl px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="title mb-4">Get In Touch</h2>
-          <div className="w-20 h-1 mx-auto mb-8" style={{ background: 'var(--primary)' }}></div>
-          <p className="text-slate-600 max-w-3xl mx-auto">
-            I'm always open to discussing new projects, creative ideas, or opportunities
-            to be part of your vision. Feel free to reach out through any of my social
-            channels.
-          </p>
-        </motion.div>
+    <section className="section-padding container-custom">
+      <div className="max-w-4xl mx-auto text-center mb-16">
+        <h2 className="text-4xl md:text-5xl font-black mb-6">
+          Let's <span className="text-[var(--primary)]">Connect</span>
+        </h2>
+        <p className="text-muted-foreground text-lg">
+          Have a project in mind or just want to say hi? Feel free to reach out. I'm always open to new opportunities!
+        </p>
+      </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-2xl mx-auto"
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {socialLinks.map((link, index) => (
+      <div className="grid lg:grid-cols-5 gap-12 items-start">
+        {/* Contact Info */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="grid gap-4">
+            {contactInfo.map((info, idx) => (
               <motion.a
-                key={link.name}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                key={idx}
+                href={info.href}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 * index }}
-                className={`card flex flex-col items-center justify-center p-6 transition-all ${link.color}`}
+                transition={{ delay: idx * 0.1 }}
+                className="glass-card p-6 flex items-center gap-4 group"
               >
-                <link.icon className="w-8 h-8 mb-3" />
-                <span className="text-slate-700">{link.name}</span>
+                <div className="w-12 h-12 rounded-2xl bg-[var(--primary)]/10 flex items-center justify-center group-hover:bg-[var(--primary)] transition-colors">
+                  <info.icon className="w-6 h-6 text-[var(--primary)] group-hover:text-white transition-colors" />
+                </div>
+                <div>
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">{info.label}</p>
+                  <p className="font-bold">{info.value}</p>
+                </div>
               </motion.a>
             ))}
           </div>
 
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-12"
-          >
-            <div className="card max-w-2xl mx-auto">
-              <h3 className="text-xl font-bold text-slate-800 mb-6 text-center">Send Me a Message</h3>
-              
-              {status.message && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className={`mb-4 p-4 rounded-lg ${
-                    status.type === 'success'
-                      ? 'bg-green-50 text-green-600'
-                      : 'bg-red-50 text-red-600'
-                  }`}
+          <div className="glass-card p-8">
+            <h4 className="font-bold mb-6 flex items-center gap-2">
+              <MessageSquare className="w-5 h-5 text-[var(--primary)]" />
+              Follow Me
+            </h4>
+            <div className="flex gap-4">
+              {socialLinks.map((social, idx) => (
+                <a
+                  key={idx}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-4 glass rounded-2xl hover:text-[var(--primary)] hover:scale-110 transition-all"
+                  aria-label={social.label}
                 >
-                  {status.message}
-                </motion.div>
-              )}
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Name</label>
-                    <input
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Email</label>
-                    <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Subject</label>
-                  <input
-                    type="text"
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Message</label>
-                  <textarea
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                    rows="5"
-                    required
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full btn flex items-center justify-center gap-2 py-3 disabled:opacity-50"
-                >
-                  <Send size={20} />
-                  {loading ? 'Sending...' : 'Send Message'}
-                </button>
-              </form>
+                  <social.icon className="w-6 h-6" />
+                </a>
+              ))}
             </div>
-          </motion.div>
+          </div>
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="mt-8 text-center"
-          >
-            <p className="text-slate-600 mb-4">
-              Prefer a direct message? Connect with me on Telegram.
-            </p>
-            <a
-              href="https://t.me/Y13bel"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn inline-flex items-center gap-2 px-8 py-3"
-            >
-              <Send size={20} />
-              <span>Message on Telegram</span>
-            </a>
-          </motion.div>
-        </motion.div>
-
+        {/* Contact Form */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-20 text-center text-slate-500"
+          className="lg:col-span-3 glass-card p-8 md:p-10"
         >
-          <p>&copy; {new Date().getFullYear()} Portfolio. All rights reserved.</p>
+          <form onSubmit={handleSubmit} className="grid gap-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-bold uppercase tracking-widest text-muted-foreground ml-1">Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Your Name"
+                  className="w-full px-5 py-4 glass rounded-2xl focus:ring-2 focus:ring-[var(--primary)] outline-none transition-all"
+                  value={formData.name}
+                  onChange={e => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-bold uppercase tracking-widest text-muted-foreground ml-1">Email</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="hello@example.com"
+                  className="w-full px-5 py-4 glass rounded-2xl focus:ring-2 focus:ring-[var(--primary)] outline-none transition-all"
+                  value={formData.email}
+                  onChange={e => setFormData({ ...formData, email: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold uppercase tracking-widest text-muted-foreground ml-1">Subject</label>
+              <input
+                type="text"
+                required
+                placeholder="Project Inquiry"
+                className="w-full px-5 py-4 glass rounded-2xl focus:ring-2 focus:ring-[var(--primary)] outline-none transition-all"
+                value={formData.subject}
+                onChange={e => setFormData({ ...formData, subject: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold uppercase tracking-widest text-muted-foreground ml-1">Message</label>
+              <textarea
+                required
+                placeholder="Tell me about your project..."
+                rows="5"
+                className="w-full px-5 py-4 glass rounded-2xl focus:ring-2 focus:ring-[var(--primary)] outline-none transition-all resize-none"
+                value={formData.message}
+                onChange={e => setFormData({ ...formData, message: e.target.value })}
+              />
+            </div>
+
+            {status.message && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`p-4 rounded-2xl font-bold text-sm text-center ${status.type === 'success' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
+                  }`}
+              >
+                {status.message}
+              </motion.div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary w-full flex items-center justify-center gap-3 !py-5 text-lg"
+            >
+              {loading ? 'Sending...' : (
+                <>
+                  Send Message <Send className="w-5 h-5" />
+                </>
+              )}
+            </button>
+          </form>
         </motion.div>
       </div>
     </section>

@@ -53,7 +53,7 @@ export function Header({ activeSection, setActiveSection }) {
             <Globe size={20} className="drop-shadow-[0_0_8px_var(--primary)]" />
           </motion.div>
           <div className="flex items-center gap-2 relative z-10">
-            <img src="/images/yihune .jpg" alt="Y B Logo" className="h-8 w-auto object-contain" />
+            <img src="/images/profile.jpg" alt="Y B Logo" className="h-8 w-auto object-contain" />
             <span className="text-xl font-black tracking-tighter uppercase">
               Yihune<span className="text-[var(--primary)]">.</span>
             </span>

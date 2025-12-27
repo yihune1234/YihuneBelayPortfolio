@@ -16,6 +16,7 @@ import {
 import { ProjectsManager } from './ProjectsManager';
 import { MessagesManager } from './MessagesManager';
 import { AdminSettings } from './AdminSettings';
+import { PhotoLogManager } from './PhotoLogManager';
 
 export function AdminDashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('overview');
@@ -55,6 +56,7 @@ export function AdminDashboard({ onLogout }) {
   const tabs = [
     { id: 'overview', label: 'Overview', icon: Home },
     { id: 'projects', label: 'Projects', icon: FolderKanban },
+    { id: 'photolog', label: 'PhotoLog', icon: Eye },
     { id: 'messages', label: 'Messages', icon: MessageSquare },
     { id: 'settings', label: 'Settings', icon: Settings }
   ];
@@ -136,8 +138,8 @@ export function AdminDashboard({ onLogout }) {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all ${activeTab === tab.id
-                  ? 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/20'
-                  : 'text-muted-foreground hover:bg-white/10 hover:text-foreground'
+                ? 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/20'
+                : 'text-muted-foreground hover:bg-white/10 hover:text-foreground'
                 }`}
             >
               <tab.icon size={22} />
@@ -184,6 +186,7 @@ export function AdminDashboard({ onLogout }) {
             >
               {activeTab === 'overview' && <Overview />}
               {activeTab === 'projects' && <ProjectsManager showAddProject={showAddProject} setShowAddProject={setShowAddProject} />}
+              {activeTab === 'photolog' && <PhotoLogManager />}
               {activeTab === 'messages' && <MessagesManager />}
               {activeTab === 'settings' && <AdminSettings />}
             </motion.div>

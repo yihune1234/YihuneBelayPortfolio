@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 export function TelegramFloatingButton() {
   return (
     <motion.a
-      href="https://t.me/yourusername"
+      href="https://t.me/@Y13bel"
       target="_blank"
       rel="noopener noreferrer"
       initial={{ opacity: 0, scale: 0 }}

@@ -80,7 +80,7 @@ export function About() {
           <div className="relative group">
             <div className="absolute -inset-4 bg-gradient-to-r from-[var(--primary)] to-purple-500 rounded-2xl opacity-20 blur-2xl group-hover:opacity-30 transition-opacity" />
             <img
-              src="/images/yihune .jpg"
+              src="/images/profile.jpg"
               alt="Yihune Belay - Full Stack Developer"
               className="relative rounded-2xl w-full aspect-square object-cover shadow-2xl grayscale hover:grayscale-0 transition-all duration-500"
             />

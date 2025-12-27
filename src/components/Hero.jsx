@@ -139,7 +139,7 @@ export function Hero({ setActiveSection }) {
               <div className="relative glass-card rounded-3xl p-2 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 to-purple-500/10" />
                 <img
-                  src="/images/yihune .jpg"
+                  src="/images/profile.jpg"
                   alt="Yihune Belay"
                   className="relative rounded-2xl w-full aspect-[3/4] object-cover shadow-2xl"
                 />
@@ -201,7 +201,7 @@ export function Hero({ setActiveSection }) {
               className="absolute -top-12 -left-12 glass-card p-4 rounded-3xl shadow-2xl hidden lg:block z-20 border-2 border-[var(--primary)]/30 overflow-hidden group"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 to-transparent group-hover:opacity-100 transition-opacity" />
-              <img src="/images/ynm.png" alt="Logo" className="w-16 h-16 object-contain relative z-10 drop-shadow-lg" />
+              <img src="/images/logo.png" alt="Logo" className="w-16 h-16 object-contain relative z-10 drop-shadow-lg" />
             </motion.div>
           </motion.div>
         </div>

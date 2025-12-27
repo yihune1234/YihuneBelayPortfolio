@@ -1,6 +1,8 @@
 import { motion, useScroll, useTransform } from 'motion/react';
-import { Camera, Heart, MessageCircle, Zap, Star } from 'lucide-react';
-import { useRef } from 'react';
+import { Camera, Heart, MessageCircle, Zap, Star, Send, X } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
+
+const API_URL = 'https://portfoliobackend-a6ah.onrender.com/api/photolog';
 
 export function PhotoLog() {
     const sectionRef = useRef(null);
@@ -12,36 +14,174 @@ export function PhotoLog() {
     const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
     const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
-    const photos = [
+    const [photos, setPhotos] = useState([
         {
-            url: '/images/yihune .jpg',
+            photoId: 'photo-1',
+            url: '/images/profile.jpg',
             title: 'Professional Portrait',
             likes: 156,
-            comments: 24,
+            commentCount: 24,
             category: 'Personal'
         },
         {
-            url: '/images/ynm.png',
+            photoId: 'photo-2',
+            url: '/images/logo.png',
             title: 'Creative Work',
             likes: 89,
-            comments: 15,
+            commentCount: 15,
             category: 'Design'
         },
         {
+            photoId: 'photo-3',
             url: '/images/yihune-dire.png',
             title: 'Project Showcase',
             likes: 124,
-            comments: 18,
+            commentCount: 18,
             category: 'Development'
         },
         {
-            url: '/images/image copy 2.png',
+            photoId: 'photo-4',
+            url: '/images/innovation.png',
             title: 'Innovation Hub',
             likes: 98,
-            comments: 12,
+            commentCount: 12,
             category: 'Tech'
         }
-    ];
+    ]);
+
+    const [likedPhotos, setLikedPhotos] = useState(new Set());
+    const [selectedPhoto, setSelectedPhoto] = useState(null);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
+    const [commentAuthor, setCommentAuthor] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Fetch photos from backend
+    useEffect(() => {
+        fetchPhotos();
+        // Load liked photos from localStorage
+        const saved = localStorage.getItem('likedPhotos');
+        if (saved) {
+            setLikedPhotos(new Set(JSON.parse(saved)));
+        }
+    }, []);
+
+    const fetchPhotos = async () => {
+        try {
+            const response = await fetch(API_URL);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.length > 0) {
+                    setPhotos(data);
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching photos:', error);
+            // Keep using static data as fallback
+        }
+    };
+
+    const handleLike = async (photoId, e) => {
+        e.stopPropagation();
+
+        const isLiked = likedPhotos.has(photoId);
+        const endpoint = isLiked ? 'unlike' : 'like';
+
+        try {
+            const response = await fetch(`${API_URL}/${photoId}/${endpoint}`, {
+                method: 'POST'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                // Update local state
+                setPhotos(prev => prev.map(photo =>
+                    photo.photoId === photoId
+                        ? { ...photo, likes: data.likes }
+                        : photo
+                ));
+
+                // Update liked photos
+                const newLiked = new Set(likedPhotos);
+                if (isLiked) {
+                    newLiked.delete(photoId);
+                } else {
+                    newLiked.add(photoId);
+                }
+                setLikedPhotos(newLiked);
+                localStorage.setItem('likedPhotos', JSON.stringify([...newLiked]));
+            }
+        } catch (error) {
+            console.error('Error liking photo:', error);
+        }
+    };
+
+    const openComments = async (photo, e) => {
+        e.stopPropagation();
+        setSelectedPhoto(photo);
+
+        try {
+            const response = await fetch(`${API_URL}/${photo.photoId}/comments`);
+            if (response.ok) {
+                const data = await response.json();
+                setComments(data.comments || []);
+            }
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+            setComments([]);
+        }
+    };
+
+    const handleSubmitComment = async (e) => {
+        e.preventDefault();
+
+        if (!newComment.trim() || !selectedPhoto) return;
+
+        setIsSubmitting(true);
+
+        try {
+            const response = await fetch(`${API_URL}/${selectedPhoto.photoId}/comment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text: newComment.trim(),
+                    author: commentAuthor.trim() || 'Anonymous'
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                // Update comments list
+                setComments(prev => [data.comment, ...prev]);
+
+                // Update photo comment count
+                setPhotos(prev => prev.map(photo =>
+                    photo.photoId === selectedPhoto.photoId
+                        ? { ...photo, commentCount: data.commentCount }
+                        : photo
+                ));
+
+                // Reset form
+                setNewComment('');
+                setCommentAuthor('');
+            }
+        } catch (error) {
+            console.error('Error submitting comment:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const closeComments = () => {
+        setSelectedPhoto(null);
+        setComments([]);
+        setNewComment('');
+        setCommentAuthor('');
+    };
 
     return (
         <section ref={sectionRef} className="section-padding container-custom overflow-hidden">
@@ -135,20 +275,30 @@ export function PhotoLog() {
                             <h4 className="text-white font-bold text-lg mb-3">{photo.title}</h4>
 
                             <div className="flex items-center gap-4">
-                                <motion.div
+                                <motion.button
                                     whileHover={{ scale: 1.2 }}
-                                    className="flex items-center gap-1.5 text-white/90 text-sm font-medium"
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={(e) => handleLike(photo.photoId, e)}
+                                    className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${likedPhotos.has(photo.photoId)
+                                            ? 'text-red-500'
+                                            : 'text-white/90 hover:text-red-400'
+                                        }`}
                                 >
-                                    <Heart size={16} className="fill-red-500 text-red-500" />
+                                    <Heart
+                                        size={16}
+                                        className={likedPhotos.has(photo.photoId) ? 'fill-red-500' : ''}
+                                    />
                                     {photo.likes}
-                                </motion.div>
-                                <motion.div
+                                </motion.button>
+                                <motion.button
                                     whileHover={{ scale: 1.2 }}
-                                    className="flex items-center gap-1.5 text-white/90 text-sm font-medium"
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={(e) => openComments(photo, e)}
+                                    className="flex items-center gap-1.5 text-white/90 text-sm font-medium hover:text-blue-400 transition-colors"
                                 >
-                                    <MessageCircle size={16} className="text-blue-400" />
-                                    {photo.comments}
-                                </motion.div>
+                                    <MessageCircle size={16} />
+                                    {photo.commentCount}
+                                </motion.button>
                             </div>
                         </motion.div>
 
@@ -216,6 +366,114 @@ export function PhotoLog() {
                     Stay updated with my latest projects and adventures
                 </motion.p>
             </motion.div>
+
+            {/* Comments Modal */}
+            {selectedPhoto && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 bg-black/80 backdrop-blur-xl z-[200] flex items-center justify-center p-4"
+                    onClick={closeComments}
+                >
+                    <motion.div
+                        initial={{ scale: 0.9, y: 20 }}
+                        animate={{ scale: 1, y: 0 }}
+                        exit={{ scale: 0.9, y: 20 }}
+                        className="bg-[var(--background)] max-w-2xl w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 max-h-[80vh] flex flex-col"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        {/* Header */}
+                        <div className="p-6 border-b border-white/10 flex items-center justify-between">
+                            <div>
+                                <h3 className="text-2xl font-bold">{selectedPhoto.title}</h3>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                    {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
+                                </p>
+                            </div>
+                            <button
+                                onClick={closeComments}
+                                className="p-2 glass rounded-full hover:bg-white/10 transition-colors"
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        {/* Comments List */}
+                        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                            {comments.length === 0 ? (
+                                <div className="text-center py-12">
+                                    <MessageCircle size={48} className="mx-auto text-muted-foreground mb-4 opacity-50" />
+                                    <p className="text-muted-foreground">No comments yet. Be the first to comment!</p>
+                                </div>
+                            ) : (
+                                comments.map((comment, idx) => (
+                                    <motion.div
+                                        key={comment._id || idx}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: idx * 0.05 }}
+                                        className="glass-card p-4 rounded-xl"
+                                    >
+                                        <div className="flex items-start gap-3">
+                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-purple-500 flex items-center justify-center text-white font-bold">
+                                                {comment.author?.[0]?.toUpperCase() || 'A'}
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <span className="font-bold text-sm">{comment.author || 'Anonymous'}</span>
+                                                    <span className="text-xs text-muted-foreground">
+                                                        {new Date(comment.createdAt).toLocaleDateString()}
+                                                    </span>
+                                                </div>
+                                                <p className="text-sm leading-relaxed">{comment.text}</p>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                ))
+                            )}
+                        </div>
+
+                        {/* Comment Form */}
+                        <form onSubmit={handleSubmitComment} className="p-6 border-t border-white/10 bg-muted/30">
+                            <div className="space-y-3">
+                                <input
+                                    type="text"
+                                    placeholder="Your name (optional)"
+                                    value={commentAuthor}
+                                    onChange={(e) => setCommentAuthor(e.target.value)}
+                                    maxLength={50}
+                                    className="w-full px-4 py-2 rounded-xl bg-background border border-white/10 focus:border-[var(--primary)] focus:outline-none transition-colors"
+                                />
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Write a comment..."
+                                        value={newComment}
+                                        onChange={(e) => setNewComment(e.target.value)}
+                                        maxLength={500}
+                                        required
+                                        className="flex-1 px-4 py-3 rounded-xl bg-background border border-white/10 focus:border-[var(--primary)] focus:outline-none transition-colors"
+                                    />
+                                    <motion.button
+                                        type="submit"
+                                        disabled={isSubmitting || !newComment.trim()}
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="px-6 py-3 bg-[var(--primary)] text-white rounded-xl font-bold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+                                    >
+                                        <Send size={18} />
+                                        {isSubmitting ? 'Sending...' : 'Send'}
+                                    </motion.button>
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                    {newComment.length}/500 characters
+                                </p>
+                            </div>
+                        </form>
+                    </motion.div>
+                </motion.div>
+            )}
         </section>
     );
 }

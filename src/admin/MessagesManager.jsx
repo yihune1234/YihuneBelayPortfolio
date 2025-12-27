@@ -15,7 +15,7 @@ export function MessagesManager() {
   const fetchMessages = async () => {
     const token = localStorage.getItem('adminToken');
     try {
-      const response = await fetch('http://localhost:5001/api/messages', {
+      const response = await fetch('https://portfoliobackend-a6ah.onrender.com/api/messages', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -28,7 +28,7 @@ export function MessagesManager() {
   const handleMarkAsRead = async (id) => {
     const token = localStorage.getItem('adminToken');
     try {
-      await fetch(`http://localhost:5001/api/messages/${id}/read`, {
+      await fetch(`https://portfoliobackend-a6ah.onrender.com/${id}/read`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -45,7 +45,7 @@ export function MessagesManager() {
     try {
       await Promise.all(
         unread.map(msg =>
-          fetch(`http://localhost:5001/api/messages/${msg._id}/read`, {
+          fetch(`https://portfoliobackend-a6ah.onrender.com/api/messages/${msg._id}/read`, {
             method: 'PUT',
             headers: { Authorization: `Bearer ${token}` },
           })
@@ -62,7 +62,7 @@ export function MessagesManager() {
 
     const token = localStorage.getItem('adminToken');
     try {
-      await fetch(`http://localhost:5001/api/messages/${id}`, {
+      await fetch(`https://portfoliobackend-a6ah.onrender.com/api/messages/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

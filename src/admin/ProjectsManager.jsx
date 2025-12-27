@@ -32,7 +32,7 @@ export function ProjectsManager({ showAddProject, setShowAddProject }) {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/projects');
+      const response = await fetch('https://portfoliobackend-a6ah.onrender.com/api/projects');
       const data = await response.json();
       setProjects(data);
     } catch (error) {
@@ -61,8 +61,8 @@ export function ProjectsManager({ showAddProject, setShowAddProject }) {
 
     try {
       const url = editingProject
-        ? `http://localhost:5001/api/projects/${editingProject._id}`
-        : 'http://localhost:5001/api/projects';
+        ? `https://portfoliobackend-a6ah.onrender.com/api/projects/${editingProject._id}`
+        : 'https://portfoliobackend-a6ah.onrender.com/api/projects';
       
       const response = await fetch(url, {
         method: editingProject ? 'PUT' : 'POST',
@@ -86,7 +86,7 @@ export function ProjectsManager({ showAddProject, setShowAddProject }) {
 
     const token = localStorage.getItem('adminToken');
     try {
-      await fetch(`http://localhost:5001/api/projects/${id}`, {
+      await fetch(`https://portfoliobackend-a6ah.onrender.com/api/projects/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -109,7 +109,7 @@ export function ProjectsManager({ showAddProject, setShowAddProject }) {
         isMini: project.isMini || false,
         image: null
       });
-      setImagePreview(project.image ? `http://localhost:5001${project.image}` : null);
+      setImagePreview(project.image ? `https://portfoliobackend-a6ah.onrender.com${project.image}` : null);
     } else {
       setEditingProject(null);
       setFormData({
@@ -188,7 +188,7 @@ export function ProjectsManager({ showAddProject, setShowAddProject }) {
             {project.image && (
               <div className="relative h-40 overflow-hidden rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800">
                 <img
-                  src={`http://localhost:5001${project.image}`}
+                  src={`https://portfoliobackend-a6ah.onrender.com${project.image}`}
                   alt={project.title}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-400"
                 />

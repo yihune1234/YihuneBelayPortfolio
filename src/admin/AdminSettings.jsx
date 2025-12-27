@@ -34,7 +34,7 @@ export function AdminSettings() {
 
     const token = localStorage.getItem('adminToken');
     try {
-      const response = await fetch('http://localhost:5001/api/admin/username', {
+      const response = await fetch('https://portfoliobackend-a6ah.onrender.com/api/admin/username', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export function AdminSettings() {
 
     const token = localStorage.getItem('adminToken');
     try {
-      const response = await fetch('http://localhost:5001/api/admin/password', {
+      const response = await fetch('https://portfoliobackend-a6ah.onrender.com/api/admin/password', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

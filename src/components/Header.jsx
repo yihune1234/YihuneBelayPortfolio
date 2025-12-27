@@ -93,20 +93,22 @@ export function Header({ activeSection, setActiveSection }) {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <>
+              {/* Full-screen dim background so menu is clearly above all content */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[90] md:hidden"
+                className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[120] md:hidden"
                 onClick={() => setIsMobileMenuOpen(false)}
               />
+              {/* Fixed dropdown panel anchored below header */}
               <motion.ul
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.25, ease: 'easeInOut' }}
-                className="md:hidden absolute left-0 right-0 mt-4 space-y-3 pb-4 bg-slate-800/95 rounded-lg px-4 py-3 border border-slate-700 z-[100]"
+                className="md:hidden fixed left-4 right-4 top-[72px] space-y-3 pb-4 bg-slate-800/95 rounded-xl px-4 py-3 border border-slate-700 z-[130] shadow-xl"
               >
                 {navItems.map((item, index) => (
                   <motion.li

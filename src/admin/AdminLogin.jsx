@@ -15,7 +15,7 @@ export function AdminLogin({ onLogin }) {
     setLoading(true);
 
     try {
-      const response = await fetch('https://portfoliobackend-a6ah.onrender.com1/api/admin/login', {
+      const response = await fetch('https://portfoliobackend-a6ah.onrender.com/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })

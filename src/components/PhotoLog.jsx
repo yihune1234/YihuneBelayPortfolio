@@ -35,7 +35,7 @@ export function PhotoLog() {
             category: 'Development'
         },
         {
-            url: '/images/image copy.png',
+            url: '/images/image copy 2.png',
             title: 'Innovation Hub',
             likes: 98,
             comments: 12,

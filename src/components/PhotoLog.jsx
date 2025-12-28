@@ -17,7 +17,7 @@ export function PhotoLog() {
     const [photos, setPhotos] = useState([
         {
             photoId: 'photo-1',
-            url: 'public/images/profile.jpg',
+            url: '/images/profile.jpg',
             title: 'Professional Profile',
             likes: 156,
             commentCount: 24,
@@ -25,7 +25,7 @@ export function PhotoLog() {
         },
         {
             photoId: 'photo-2',
-            url: 'public/images/logo.png',
+            url: '/images/logo.png',
             title: 'Digital Identity',
             likes: 89,
             commentCount: 15,
@@ -33,13 +33,34 @@ export function PhotoLog() {
         },
         {
             photoId: 'photo-4',
-            url: 'public/images/innovation.png',
+            url: '/images/innovation.png',
             title: 'Innovation Lab',
             likes: 98,
             commentCount: 12,
             category: 'Tech'
         }
     ]);
+
+    const getImageUrl = (imagePath) => {
+        if (!imagePath) return '';
+        if (imagePath.startsWith('http')) return imagePath;
+        if (imagePath.startsWith('/images/')) return imagePath; // Correct local path
+        if (imagePath.startsWith('public/images/')) return imagePath.replace('public/', '/'); // Fix incorrect local path
+
+        // Base URL for the backend
+        const BASE_URL = 'https://portfoliobackend-a6ah.onrender.com';
+
+        // Remove leading slash
+        const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+
+        // If it already contains 'uploads/', just prepend base URL
+        if (cleanPath.startsWith('uploads/')) {
+            return `${BASE_URL}/${cleanPath}`;
+        }
+
+        // Otherwise prepend /uploads/ (standard for your backend)
+        return `${BASE_URL}/uploads/${cleanPath}`;
+    };
 
     const [likedPhotos, setLikedPhotos] = useState(new Set());
     const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -271,7 +292,7 @@ export function PhotoLog() {
                     >
                         {/* Image */}
                         <motion.img
-                            src={photo.url}
+                            src={getImageUrl(photo.url)}
                             alt={photo.title}
                             className="w-full h-full object-cover"
                             whileHover={{ scale: 1.15 }}

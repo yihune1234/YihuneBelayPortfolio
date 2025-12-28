@@ -12,6 +12,27 @@ export function PhotoLogManager() {
     const [editingPhoto, setEditingPhoto] = useState(null);
     const [editForm, setEditForm] = useState({ title: '', category: '', url: '' });
 
+    const getImageUrl = (imagePath) => {
+        if (!imagePath) return '';
+        if (imagePath.startsWith('http')) return imagePath;
+        if (imagePath.startsWith('/images/')) return imagePath;
+        if (imagePath.startsWith('public/images/')) return imagePath.replace('public/', '/');
+
+        // Base URL for the backend
+        const BASE_URL = 'https://portfoliobackend-a6ah.onrender.com';
+
+        // Remove leading slash
+        const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+
+        // If it already contains 'uploads/', just prepend base URL
+        if (cleanPath.startsWith('uploads/')) {
+            return `${BASE_URL}/${cleanPath}`;
+        }
+
+        // Otherwise prepend /uploads/ (standard for your backend)
+        return `${BASE_URL}/uploads/${cleanPath}`;
+    };
+
     useEffect(() => {
         fetchPhotos();
     }, []);
@@ -296,7 +317,7 @@ export function PhotoLogManager() {
                             <>
                                 <div className="relative aspect-video">
                                     <img
-                                        src={photo.url}
+                                        src={getImageUrl(photo.url)}
                                         alt={photo.title}
                                         className="w-full h-full object-cover"
                                     />

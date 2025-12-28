@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Globe } from 'lucide-react';
+import { Menu, X, Globe, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ThemeToggle } from './ThemeToggle.jsx';
 import { ThemeSelector } from './ThemeSelector.jsx';
@@ -86,9 +86,10 @@ export function Header({ activeSection, setActiveSection }) {
 
           <button
             onClick={() => handleNavClick('admin')}
-            className="ml-2 btn-primary !py-2 !px-5 text-sm"
+            className="ml-2 p-2 glass-card rounded-xl hover:text-[var(--primary)] transition-colors"
+            title="Admin Access"
           >
-            Admin
+            <Settings size={20} />
           </button>
         </nav>
 
@@ -133,9 +134,10 @@ export function Header({ activeSection, setActiveSection }) {
                 <ThemeSelector />
                 <button
                   onClick={() => handleNavClick('admin')}
-                  className="btn-primary flex-1"
+                  className="p-3 glass-card rounded-xl flex items-center justify-center text-[var(--primary)]"
+                  title="Admin Access"
                 >
-                  Admin Access
+                  <Settings size={22} />
                 </button>
               </div>
             </div>

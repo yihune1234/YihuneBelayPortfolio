@@ -18,7 +18,7 @@ export function PhotoLog() {
         {
             photoId: 'photo-1',
             url: '/images/profile.jpg',
-            title: 'Professional Portrait',
+            title: 'Professional Profile',
             likes: 156,
             commentCount: 24,
             category: 'Personal'
@@ -26,23 +26,15 @@ export function PhotoLog() {
         {
             photoId: 'photo-2',
             url: '/images/logo.png',
-            title: 'Creative Work',
+            title: 'Digital Identity',
             likes: 89,
             commentCount: 15,
             category: 'Design'
         },
         {
-            photoId: 'photo-3',
-            url: '/images/yihune-dire.png',
-            title: 'Project Showcase',
-            likes: 124,
-            commentCount: 18,
-            category: 'Development'
-        },
-        {
             photoId: 'photo-4',
             url: '/images/innovation.png',
-            title: 'Innovation Hub',
+            title: 'Innovation Lab',
             likes: 98,
             commentCount: 12,
             category: 'Tech'
@@ -73,11 +65,42 @@ export function PhotoLog() {
                 const data = await response.json();
                 if (data.length > 0) {
                     setPhotos(data);
+                } else {
+                    // Auto-initialize photos if database is empty
+                    await initializePhotos();
                 }
+            } else if (response.status === 404) {
+                // Backend route might not exist yet, use static data
+                console.warn('PhotoLog API not available, using static data');
             }
         } catch (error) {
             console.error('Error fetching photos:', error);
             // Keep using static data as fallback
+        }
+    };
+
+    const initializePhotos = async () => {
+        try {
+            // Initialize each photo in the database
+            for (const photo of photos) {
+                await fetch(`${API_URL}/init`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(photo)
+                });
+            }
+            // Fetch again after initialization
+            const response = await fetch(API_URL);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.length > 0) {
+                    setPhotos(data);
+                }
+            }
+        } catch (error) {
+            console.error('Error initializing photos:', error);
         }
     };
 
@@ -280,8 +303,8 @@ export function PhotoLog() {
                                     whileTap={{ scale: 0.9 }}
                                     onClick={(e) => handleLike(photo.photoId, e)}
                                     className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${likedPhotos.has(photo.photoId)
-                                            ? 'text-red-500'
-                                            : 'text-white/90 hover:text-red-400'
+                                        ? 'text-red-500'
+                                        : 'text-white/90 hover:text-red-400'
                                         }`}
                                 >
                                     <Heart

@@ -16,6 +16,27 @@ export function Projects() {
     fetchProjects();
   }, []);
 
+  const UPLOADS_URL = 'https://portfoliobackend-a6ah.onrender.com/uploads/';
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
+    if (imagePath.startsWith('http')) return imagePath;
+
+    // Base URL for the backend
+    const BASE_URL = 'https://portfoliobackend-a6ah.onrender.com';
+
+    // Remove leading slash
+    const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+
+    // If it already contains 'uploads/', just prepend base URL
+    if (cleanPath.startsWith('uploads/')) {
+      return `${BASE_URL}/${cleanPath}`;
+    }
+
+    // Otherwise prepend /uploads/
+    return `${BASE_URL}/uploads/${cleanPath}`;
+  };
+
   const fetchProjects = async () => {
     try {
       // Use the production backend URL consistent with AdminLogin
@@ -84,7 +105,7 @@ export function Projects() {
               <div className="glass-card overflow-hidden grid md:grid-cols-2 gap-8 p-6 md:p-10 group">
                 <div className="relative overflow-hidden rounded-xl aspect-video md:aspect-auto">
                   <img
-                    src={project.image}
+                    src={getImageUrl(project.image)}
                     alt={project.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
@@ -140,7 +161,7 @@ export function Projects() {
           >
             <div className="relative aspect-video overflow-hidden">
               <img
-                src={project.image}
+                src={getImageUrl(project.image)}
                 alt={project.title}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
@@ -189,7 +210,7 @@ export function Projects() {
             >
               <div className="relative h-72 md:h-96">
                 <img
-                  src={selectedProject.image}
+                  src={getImageUrl(selectedProject.image)}
                   alt={selectedProject.title}
                   className="w-full h-full object-cover"
                 />

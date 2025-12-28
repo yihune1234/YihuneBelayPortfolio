@@ -19,6 +19,26 @@ export function ProjectsManager({ showAddProject, setShowAddProject }) {
     image: null
   });
 
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
+    if (imagePath.startsWith('http')) return imagePath;
+    if (imagePath.startsWith('data:')) return imagePath; // For local previews
+
+    // Base URL for the backend
+    const BASE_URL = 'https://portfoliobackend-a6ah.onrender.com';
+
+    // Remove leading slash
+    const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+
+    // If it already contains 'uploads/', just prepend base URL
+    if (cleanPath.startsWith('uploads/')) {
+      return `${BASE_URL}/${cleanPath}`;
+    }
+
+    // Otherwise prepend /uploads/
+    return `${BASE_URL}/uploads/${cleanPath}`;
+  };
+
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -109,7 +129,7 @@ export function ProjectsManager({ showAddProject, setShowAddProject }) {
         isMini: project.isMini || false,
         image: null
       });
-      setImagePreview(project.image ? `https://portfoliobackend-a6ah.onrender.com${project.image}` : null);
+      setImagePreview(project.image ? getImageUrl(project.image) : null);
     } else {
       setEditingProject(null);
       setFormData({
@@ -170,7 +190,7 @@ export function ProjectsManager({ showAddProject, setShowAddProject }) {
           >
             <div className="relative aspect-video overflow-hidden rounded-xl mb-4">
               <img
-                src={project.image ? `https://portfoliobackend-a6ah.onrender.com${project.image}` : 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop'}
+                src={project.image ? getImageUrl(project.image) : 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop'}
                 alt={project.title}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />

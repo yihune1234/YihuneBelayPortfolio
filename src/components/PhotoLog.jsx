@@ -17,7 +17,7 @@ export function PhotoLog() {
     const [photos, setPhotos] = useState([
         {
             photoId: 'photo-1',
-            url: '/images/profile.jpg',
+            url: 'public/images/profile.jpg',
             title: 'Professional Profile',
             likes: 156,
             commentCount: 24,
@@ -25,7 +25,7 @@ export function PhotoLog() {
         },
         {
             photoId: 'photo-2',
-            url: '/images/logo.png',
+            url: 'public/images/logo.png',
             title: 'Digital Identity',
             likes: 89,
             commentCount: 15,
@@ -33,7 +33,7 @@ export function PhotoLog() {
         },
         {
             photoId: 'photo-4',
-            url: '/images/innovation.png',
+            url: 'public/images/innovation.png',
             title: 'Innovation Lab',
             likes: 98,
             commentCount: 12,

@@ -51,27 +51,27 @@ export function Projects() {
     }
   };
 
-  const staticProjects = [
-    {
-      title: 'Association Union Management System',
-      description: 'A comprehensive management system for student associations and unions. Features include member management, event coordination, and voting systems.',
-      technologies: ['node js', 'Mongodb', 'React js', 'Express'],
-      image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop',
-      demoUrl: 'https://murti-guutoo-student-association-ze.vercel.app/',
-      githubUrl: 'https://github.com',
-      role: 'Full Stack Developer',
-      featured: true
-    },
-    {
-      title: 'Student Contact Management',
-      description: 'Digital roster system for managing student information, contact details, and academic records.',
-      technologies: ['php', 'mysql', 'javascript', 'html'],
-      image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop',
-      githubUrl: 'https://github.com',
-      role: 'Solo Developer',
-      featured: true
-    }
-  ];
+  // const staticProjects = [
+  //   {
+  //     title: 'Association Union Management System',
+  //     description: 'A comprehensive management system for student associations and unions. Features include member management, event coordination, and voting systems.',
+  //     technologies: ['node js', 'Mongodb', 'React js', 'Express'],
+  //     image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop',
+  //     demoUrl: 'https://murti-guutoo-student-association-ze.vercel.app/',
+  //     githubUrl: 'https://github.com',
+  //     role: 'Full Stack Developer',
+  //     featured: true
+  //   },
+  //   {
+  //     title: 'Student Contact Management',
+  //     description: 'Digital roster system for managing student information, contact details, and academic records.',
+  //     technologies: ['php', 'mysql', 'javascript', 'html'],
+  //     image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop',
+  //     githubUrl: 'https://github.com',
+  //     role: 'Solo Developer',
+  //     featured: true
+  //   }
+  // ];
 
   const featuredProjects = projects.filter(p => p.featured) || projects.slice(0, 3);
 

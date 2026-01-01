@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { Camera, Heart, MessageCircle, Zap, Star, Send, X } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 
@@ -228,296 +228,256 @@ export function PhotoLog() {
     };
 
     return (
-        <section ref={sectionRef} className="section-padding container-custom overflow-hidden">
+        <section ref={sectionRef} className="section-padding container-custom relative overflow-hidden">
+            {/* Cinematic Background Accents */}
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px] -z-10 animate-pulse" />
+            
             <motion.div
                 style={{ opacity }}
-                className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6"
+                className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8"
             >
-                <div>
+                <div className="max-w-2xl">
                     <motion.h2
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, scale: 0.9, x: -50 }}
+                        whileInView={{ opacity: 1, scale: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-black mb-4"
+                        className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 tracking-tighter"
                     >
-                        Photo <span className="text-[var(--primary)]">Log</span>
+                        Visual <span className="text-gradient">Chronicle.</span>
                     </motion.h2>
                     <motion.p
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-muted-foreground text-lg max-w-xl"
+                        className="text-muted-foreground text-xl leading-relaxed italic"
                     >
-                        A glimpse into my daily life, learning journey, and the moments that inspire my work.
+                        Capturing the essence of innovation, one frame at a time. A journey through lenses and logic.
                     </motion.p>
                 </div>
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, rotate: -10 }}
+                    whileInView={{ opacity: 1, rotate: 0 }}
                     viewport={{ once: true }}
-                    whileHover={{ scale: 1.05 }}
-                    className="p-3 glass rounded-2xl flex items-center gap-2 font-bold text-sm"
+                    className="p-5 glass-card rounded-[2rem] flex items-center gap-4 border-white/20 shadow-2xl"
                 >
-                    <Camera size={18} className="text-[var(--primary)]" />
-                    Behind the Scenes
+                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+                        <Camera size={24} className="text-primary" />
+                    </div>
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Portfolio</p>
+                        <p className="font-black text-sm italic">Behind The Interface</p>
+                    </div>
                 </motion.div>
             </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10 perspective-2000">
                 {photos.map((photo, idx) => (
                     <motion.div
                         key={idx}
-                        initial={{ opacity: 0, y: 50, rotateY: -15 }}
-                        whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+                        initial={{ opacity: 0, y: 100, rotateX: 30 }}
+                        whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{
-                            delay: idx * 0.15,
-                            duration: 0.6,
-                            type: "spring",
-                            stiffness: 100
+                            delay: idx * 0.1,
+                            duration: 0.8,
+                            ease: [0.16, 1, 0.3, 1]
                         }}
                         whileHover={{
-                            y: -10,
+                            y: -20,
+                            scale: 1.05,
                             rotateY: 5,
-                            rotateX: 5,
-                            scale: 1.02,
-                            transition: { duration: 0.3 }
+                            transition: { duration: 0.5 }
                         }}
-                        className="group relative aspect-[3/4] overflow-hidden rounded-3xl cursor-pointer"
-                        style={{
-                            transformStyle: 'preserve-3d',
-                            perspective: '1000px'
-                        }}
+                        className="group relative aspect-[3/4] overflow-hidden rounded-[2.5rem] cursor-pointer shadow-2xl bg-slate-900 border border-white/10"
+                        onClick={(e) => openComments(photo, e)}
                     >
-                        {/* Image */}
-                        <motion.img
-                            src={getImageUrl(photo.url)}
-                            alt={photo.title}
-                            className="w-full h-full object-cover"
-                            whileHover={{ scale: 1.15 }}
-                            transition={{ duration: 0.6, ease: "easeOut" }}
-                        />
+                        {/* Image Engine */}
+                        <div className="absolute inset-0 scale-110 group-hover:scale-100 transition-transform duration-1000">
+                            <img
+                                src={getImageUrl(photo.url)}
+                                alt={photo.title}
+                                className="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
+                        </div>
 
-                        {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
-
-                        {/* Content Overlay */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileHover={{ opacity: 1, y: 0 }}
-                            className="absolute inset-0 p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-all duration-300"
-                        >
-                            {/* Category Badge */}
-                            <div className="mb-3">
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass text-xs font-bold text-white">
-                                    <Star size={12} className="fill-yellow-400 text-yellow-400" />
+                        {/* Premium HUD Overlay */}
+                        <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                            <motion.div className="flex items-center gap-2 mb-4">
+                                <span className="px-4 py-1.5 rounded-full bg-primary/20 backdrop-blur-md text-[8px] font-black uppercase tracking-[0.3em] text-white border border-white/10">
                                     {photo.category}
                                 </span>
-                            </div>
+                                <div className="h-px flex-1 bg-white/10" />
+                            </motion.div>
 
-                            <h4 className="text-white font-bold text-lg mb-3">{photo.title}</h4>
+                            <h4 className="text-white font-black text-2xl mb-6 tracking-tight leading-tight group-hover:text-primary transition-colors">{photo.title}</h4>
 
-                            <div className="flex items-center gap-4">
-                                <motion.button
-                                    whileHover={{ scale: 1.2 }}
-                                    whileTap={{ scale: 0.9 }}
+                            <div className="flex items-center gap-6">
+                                <button
                                     onClick={(e) => handleLike(photo.photoId, e)}
-                                    className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${likedPhotos.has(photo.photoId)
-                                        ? 'text-red-500'
-                                        : 'text-white/90 hover:text-red-400'
-                                        }`}
+                                    className={`flex items-center gap-2 text-xs font-black transition-all ${likedPhotos.has(photo.photoId) ? 'text-red-500 scale-110' : 'text-white/60 hover:text-red-400'}`}
                                 >
-                                    <Heart
-                                        size={16}
-                                        className={likedPhotos.has(photo.photoId) ? 'fill-red-500' : ''}
-                                    />
+                                    <Heart size={20} className={likedPhotos.has(photo.photoId) ? 'fill-red-500' : ''} />
                                     {photo.likes}
-                                </motion.button>
-                                <motion.button
-                                    whileHover={{ scale: 1.2 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    onClick={(e) => openComments(photo, e)}
-                                    className="flex items-center gap-1.5 text-white/90 text-sm font-medium hover:text-blue-400 transition-colors"
+                                </button>
+                                <button
+                                    className="flex items-center gap-2 text-white/60 text-xs font-black hover:text-primary transition-all"
                                 >
-                                    <MessageCircle size={16} />
+                                    <MessageCircle size={20} />
                                     {photo.commentCount}
-                                </motion.button>
+                                </button>
                             </div>
-                        </motion.div>
+                        </div>
 
-                        {/* Top Right Icon */}
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0 }}
-                            whileHover={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.1 }}
-                            className="absolute top-4 right-4 p-2.5 glass rounded-full opacity-0 group-hover:opacity-100"
-                        >
-                            <Camera size={16} className="text-white" />
-                        </motion.div>
-
-                        {/* Decorative Corner Accent */}
-                        <motion.div
-                            initial={{ scale: 0, rotate: 0 }}
-                            whileHover={{ scale: 1, rotate: 45 }}
-                            transition={{ duration: 0.3 }}
-                            className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-[var(--primary)]/30 to-transparent rounded-br-full opacity-0 group-hover:opacity-100"
-                        />
-
-                        {/* Bottom Glow Effect */}
-                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--primary)] via-purple-500 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+                        {/* Top Accent */}
+                        <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <div className="glass-card !rounded-2xl p-3 border-white/20">
+                                <Zap size={16} className="text-primary animate-pulse" />
+                            </div>
+                        </div>
                     </motion.div>
                 ))}
             </div>
 
-            {/* Call to Action */}
+            {/* Futuristic CTA */}
             <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="mt-16 flex flex-col items-center gap-6"
+                className="mt-32 relative text-center"
             >
-                <motion.div
-                    style={{ y }}
-                    className="relative"
-                >
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="btn-outline flex items-center gap-2 group relative overflow-hidden"
-                    >
-                        <motion.span
-                            className="absolute inset-0 bg-gradient-to-r from-[var(--primary)] to-purple-500 opacity-0 group-hover:opacity-10 transition-opacity"
-                        />
-                        <Zap size={18} className="group-hover:text-[var(--primary)] transition-colors" />
-                        Follow My Journey
-                        <motion.span
-                            animate={{ x: [0, 5, 0] }}
-                            transition={{ duration: 1.5, repeat: Infinity }}
-                        >
-                            →
-                        </motion.span>
-                    </motion.button>
-                </motion.div>
-
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                    className="text-sm text-muted-foreground"
-                >
-                    Stay updated with my latest projects and adventures
-                </motion.p>
+                <div className="absolute inset-0 bg-primary/5 blur-[100px] rounded-full" />
+                <button className="btn-primary !rounded-full !px-12 !py-6 text-xl tracking-[0.2em] group relative overflow-hidden">
+                    <span className="relative z-10 flex items-center gap-4">
+                        Explore Full Archive <Star className="w-5 h-5 group-hover:rotate-180 transition-transform" />
+                    </span>
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform" />
+                </button>
             </motion.div>
 
-            {/* Comments Modal */}
-            {selectedPhoto && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 bg-black/80 backdrop-blur-xl z-[200] flex items-center justify-center p-4"
-                    onClick={closeComments}
-                >
+            {/* Cinematic Comments Section */}
+            <AnimatePresence>
+                {selectedPhoto && (
                     <motion.div
-                        initial={{ scale: 0.9, y: 20 }}
-                        animate={{ scale: 1, y: 0 }}
-                        exit={{ scale: 0.9, y: 20 }}
-                        className="bg-[var(--background)] max-w-2xl w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 max-h-[80vh] flex flex-col"
-                        onClick={e => e.stopPropagation()}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/95 backdrop-blur-3xl z-[200] flex items-center justify-center p-4 md:p-12"
+                        onClick={closeComments}
                     >
-                        {/* Header */}
-                        <div className="p-6 border-b border-white/10 flex items-center justify-between">
-                            <div>
-                                <h3 className="text-2xl font-bold">{selectedPhoto.title}</h3>
-                                <p className="text-sm text-muted-foreground mt-1">
-                                    {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
-                                </p>
-                            </div>
-                            <button
-                                onClick={closeComments}
-                                className="p-2 glass rounded-full hover:bg-white/10 transition-colors"
-                            >
-                                <X size={20} />
-                            </button>
-                        </div>
-
-                        {/* Comments List */}
-                        <div className="flex-1 overflow-y-auto p-6 space-y-4">
-                            {comments.length === 0 ? (
-                                <div className="text-center py-12">
-                                    <MessageCircle size={48} className="mx-auto text-muted-foreground mb-4 opacity-50" />
-                                    <p className="text-muted-foreground">No comments yet. Be the first to comment!</p>
-                                </div>
-                            ) : (
-                                comments.map((comment, idx) => (
-                                    <motion.div
-                                        key={comment._id || idx}
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: idx * 0.05 }}
-                                        className="glass-card p-4 rounded-xl"
-                                    >
-                                        <div className="flex items-start gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-purple-500 flex items-center justify-center text-white font-bold">
-                                                {comment.author?.[0]?.toUpperCase() || 'A'}
-                                            </div>
-                                            <div className="flex-1">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className="font-bold text-sm">{comment.author || 'Anonymous'}</span>
-                                                    <span className="text-xs text-muted-foreground">
-                                                        {new Date(comment.createdAt).toLocaleDateString()}
-                                                    </span>
-                                                </div>
-                                                <p className="text-sm leading-relaxed">{comment.text}</p>
-                                            </div>
-                                        </div>
-                                    </motion.div>
-                                ))
-                            )}
-                        </div>
-
-                        {/* Comment Form */}
-                        <form onSubmit={handleSubmitComment} className="p-6 border-t border-white/10 bg-muted/30">
-                            <div className="space-y-3">
-                                <input
-                                    type="text"
-                                    placeholder="Your name (optional)"
-                                    value={commentAuthor}
-                                    onChange={(e) => setCommentAuthor(e.target.value)}
-                                    maxLength={50}
-                                    className="w-full px-4 py-2 rounded-xl bg-background border border-white/10 focus:border-[var(--primary)] focus:outline-none transition-colors"
+                        <motion.div
+                            initial={{ scale: 0.9, rotateX: 20, opacity: 0 }}
+                            animate={{ scale: 1, rotateX: 0, opacity: 1 }}
+                            exit={{ scale: 0.9, rotateX: 20, opacity: 0 }}
+                            transition={{ type: 'spring', damping: 25 }}
+                            className="bg-slate-900 max-w-5xl w-full rounded-[3rem] overflow-hidden shadow-[0_0_100px_rgba(var(--primary-rgb),0.2)] border border-white/10 flex flex-col lg:flex-row h-[85vh] perspective-1000"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            {/* Visual Half */}
+                            <div className="lg:w-1/2 relative bg-black">
+                                <img
+                                    src={getImageUrl(selectedPhoto.url)}
+                                    alt={selectedPhoto.title}
+                                    className="w-full h-full object-cover opacity-80"
                                 />
-                                <div className="flex gap-2">
-                                    <input
-                                        type="text"
-                                        placeholder="Write a comment..."
-                                        value={newComment}
-                                        onChange={(e) => setNewComment(e.target.value)}
-                                        maxLength={500}
-                                        required
-                                        className="flex-1 px-4 py-3 rounded-xl bg-background border border-white/10 focus:border-[var(--primary)] focus:outline-none transition-colors"
-                                    />
-                                    <motion.button
-                                        type="submit"
-                                        disabled={isSubmitting || !newComment.trim()}
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className="px-6 py-3 bg-[var(--primary)] text-white rounded-xl font-bold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
-                                    >
-                                        <Send size={18} />
-                                        {isSubmitting ? 'Sending...' : 'Send'}
-                                    </motion.button>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+                                <div className="absolute bottom-10 left-10 text-white">
+                                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-2 block">Source Material</span>
+                                    <h3 className="text-4xl font-black italic tracking-tighter">{selectedPhoto.title}</h3>
                                 </div>
-                                <p className="text-xs text-muted-foreground">
-                                    {newComment.length}/500 characters
-                                </p>
                             </div>
-                        </form>
+
+                            {/* Dialogue Half */}
+                            <div className="lg:w-1/2 flex flex-col bg-slate-900/50 backdrop-blur-3xl">
+                                <div className="p-10 border-b border-white/10 flex items-center justify-between">
+                                    <div>
+                                        <h4 className="text-2xl font-black tracking-tight">Public Dialogue</h4>
+                                        <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground mt-2">
+                                            {comments.length} Interactive Signals Received
+                                        </p>
+                                    </div>
+                                    <button
+                                        onClick={closeComments}
+                                        className="p-4 glass rounded-2xl hover:bg-red-500/20 hover:text-red-500 transition-all border-white/10"
+                                    >
+                                        <X size={24} />
+                                    </button>
+                                </div>
+
+                                <div className="flex-1 overflow-y-auto p-10 space-y-8 scrollbar-hide">
+                                    {comments.length === 0 ? (
+                                        <div className="h-full flex flex-col items-center justify-center text-center opacity-30">
+                                            <MessageCircle size={80} className="mb-6 stroke-1" />
+                                            <p className="text-xl font-black uppercase tracking-widest">Awaiting First Signal</p>
+                                        </div>
+                                    ) : (
+                                        comments.map((comment, idx) => (
+                                            <motion.div
+                                                key={comment._id || idx}
+                                                initial={{ opacity: 0, x: 20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                className="glass-card p-6 rounded-3xl border-white/5 relative overflow-hidden group"
+                                            >
+                                                <div className="absolute top-0 left-0 w-1 h-full bg-primary/20 group-hover:bg-primary transition-colors" />
+                                                <div className="flex items-start gap-4">
+                                                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center text-white font-black text-xl italic shadow-lg">
+                                                        {comment.author?.[0]?.toUpperCase() || 'A'}
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center justify-between mb-3">
+                                                            <span className="font-black text-sm uppercase tracking-wider">{comment.author || 'Entity'}</span>
+                                                            <span className="text-[10px] font-black text-muted-foreground uppercase">
+                                                                {new Date(comment.createdAt).toLocaleDateString()}
+                                                            </span>
+                                                        </div>
+                                                        <p className="text-sm leading-relaxed font-medium text-slate-300 italic">"{comment.text}"</p>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        ))
+                                    )}
+                                </div>
+
+                                <form onSubmit={handleSubmitComment} className="p-10 border-t border-white/10 bg-black/20">
+                                    <div className="space-y-6">
+                                        <div className="grid grid-cols-2 gap-4">
+                                          <input
+                                              type="text"
+                                              placeholder="IDENTIFY"
+                                              value={commentAuthor}
+                                              onChange={(e) => setCommentAuthor(e.target.value)}
+                                              className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 focus:border-primary focus:outline-none transition-all font-black text-xs tracking-widest uppercase"
+                                          />
+                                          <div className="text-right flex items-center justify-end text-[10px] font-black text-muted-foreground italic uppercase">
+                                            Dialogue Protocol v1.4
+                                          </div>
+                                        </div>
+                                        
+                                        <div className="flex gap-4">
+                                            <input
+                                                type="text"
+                                                placeholder="TRANSMIT YOUR THOUGHTS..."
+                                                value={newComment}
+                                                onChange={(e) => setNewComment(e.target.value)}
+                                                required
+                                                className="flex-1 px-6 py-4 rounded-2xl bg-white/5 border border-white/10 focus:border-primary focus:outline-none transition-all font-medium"
+                                            />
+                                            <button
+                                                type="submit"
+                                                disabled={isSubmitting || !newComment.trim()}
+                                                className="px-8 py-4 bg-primary text-white rounded-2xl font-black uppercase tracking-widest text-xs flex items-center gap-3 disabled:opacity-50 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20"
+                                            >
+                                                {isSubmitting ? '...' : <Send size={20} />}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </motion.div>
                     </motion.div>
-                </motion.div>
-            )}
+                )}
+            </AnimatePresence>
         </section>
     );
 }

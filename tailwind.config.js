@@ -12,7 +12,7 @@ export default {
                 ring: "var(--ring)",
                 background: "var(--background)",
                 foreground: "var(--foreground)",
-                primary: "var(--primary)",
+                primary: "rgb(var(--primary-rgb) / <alpha-value>)",
                 "primary-foreground": "var(--primary-foreground)",
                 secondary: "var(--secondary)",
                 "secondary-foreground": "var(--secondary-foreground)",

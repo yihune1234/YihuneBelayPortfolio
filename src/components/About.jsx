@@ -68,182 +68,154 @@ export function About() {
   };
 
   return (
-    <section className="section-padding container-custom">
-      <div className="grid lg:grid-cols-2 gap-16 items-start">
+    <section className="section-padding container-custom relative">
+      <div className="grid lg:grid-cols-2 gap-20 items-start">
         {/* Left: Image and Bio */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
+          initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="relative lg:sticky lg:top-24"
+          className="relative lg:sticky lg:top-32"
         >
-          <div className="relative group">
-            <div className="absolute -inset-4 bg-gradient-to-r from-[var(--primary)] to-purple-500 rounded-2xl opacity-20 blur-2xl group-hover:opacity-30 transition-opacity" />
-            <img
-              src="/images/profile.jpg"
-              alt="Yihune Belay - Full Stack Developer"
-              className="relative rounded-2xl w-full aspect-square object-cover shadow-2xl grayscale hover:grayscale-0 transition-all duration-500"
-            />
+          <div className="relative group perspective-1000">
+            <div className="absolute -inset-6 bg-gradient-to-r from-primary via-purple-500 to-pink-500 rounded-[2.5rem] opacity-20 blur-[60px] group-hover:opacity-40 transition-opacity duration-700" />
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/20 shadow-2xl">
+              <img
+                src="/images/profile.jpg"
+                alt="Yihune Belay"
+                className="w-full aspect-[4/5] object-cover transition-all duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+            </div>
+
+            {/* Floating Experience Badge */}
+            <motion.div 
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute -bottom-8 -right-8 glass-card p-6 border-white/30 backdrop-blur-3xl rounded-[2rem] shadow-2xl"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
+                  <span className="text-white font-black text-xl italic">3+</span>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Years Of</p>
+                  <p className="font-black text-lg">Digital Craft</p>
+                </div>
+              </div>
+            </motion.div>
           </div>
 
-          {/* Stats Grid */}
-          <div className="mt-8 grid grid-cols-3 gap-3">
-            {stats.map((stat, idx) => (
+          {/* Core Competencies Grid */}
+          <div className="mt-20 grid grid-cols-2 gap-4">
+            {coreCompetencies.map((comp, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="glass-card p-4 text-center"
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="glass-card p-5 border-white/10 flex items-center gap-4 group"
               >
-                <stat.icon className="w-5 h-5 mx-auto mb-2 text-[var(--primary)]" />
-                <div className="text-xl font-black">{stat.value}</div>
-                <div className="text-[9px] uppercase font-bold tracking-wider text-muted-foreground mt-1">
-                  {stat.label}
+                <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary group-hover:text-white transition-all">
+                  <comp.icon size={20} />
                 </div>
+                <span className="text-xs font-black uppercase tracking-widest">{comp.name}</span>
               </motion.div>
             ))}
           </div>
-
-          {/* Core Competencies */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-8 glass-card p-6 rounded-2xl"
-          >
-            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-4">Core Competencies</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {coreCompetencies.map((comp, idx) => (
-                <motion.div
-                  key={idx}
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center gap-2 p-2 rounded-lg hover:bg-[var(--primary)]/10 transition-colors"
-                >
-                  <comp.icon size={16} className="text-[var(--primary)]" />
-                  <span className="text-xs font-medium">{comp.name}</span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
         </motion.div>
 
         {/* Right: Description and Skills */}
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          className="space-y-8"
-        >
-          {/* About Me Header */}
-          <div>
+        <div className="space-y-16">
+          <div className="space-y-8">
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl md:text-5xl font-black mb-4"
+              className="text-5xl md:text-7xl font-black tracking-tighter"
             >
-              About <span className="text-[var(--primary)]">Me</span>
+              The <span className="text-gradient">Architect.</span>
             </motion.h2>
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-lg text-muted-foreground leading-relaxed"
+              transition={{ delay: 0.2 }}
+              className="space-y-6"
             >
-              Passionate and driven <span className="font-bold text-foreground">4th-year Software Engineering student</span> with expertise in full-stack web development and a proven track record of building modern, responsive applications. Specializing in React, Node.js, and database management with strong problem-solving abilities and a collaborative mindset.
-            </motion.p>
+              <p className="text-xl text-muted-foreground leading-relaxed font-medium">
+                Driven by a relentless pursuit of <span className="text-foreground font-black italic">elegance</span> in code and <span className="text-primary font-black">sophistication</span> in design.
+              </p>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                As a senior Software Engineering student, I transcend traditional development boundaries to build complex digital ecosystems. My approach harmonizes robust backend logic with haute-couture frontend experiences.
+              </p>
+            </motion.div>
           </div>
 
-          {/* Technical Skills */}
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold">Technical Skills</h3>
+          {/* Enhanced Skills Catalog */}
+          <div className="space-y-10">
+            <h3 className="text-3xl font-black tracking-tight">Technical Arsenal</h3>
 
-            {skillCategories.map((category, catIdx) => (
-              <motion.div
-                key={catIdx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: catIdx * 0.1 }}
-                className="space-y-4"
-              >
-                {/* Category Header */}
-                <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-xl bg-gradient-to-br ${category.color}`}>
-                    <category.icon className="w-5 h-5 text-white" />
+            <div className="grid gap-8">
+              {skillCategories.map((category, catIdx) => (
+                <motion.div
+                  key={catIdx}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: catIdx * 0.1 }}
+                  className="space-y-6"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg`}>
+                      <category.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h4 className="text-2xl font-black tracking-tight">{category.title}</h4>
                   </div>
-                  <h4 className="text-lg font-bold">{category.title}</h4>
-                </div>
 
-                {/* Skills Grid */}
-                <div className="grid gap-3 pl-4 border-l-2 border-[var(--border)]">
-                  {category.skills.map((skill, skillIdx) => {
-                    const levelInfo = getLevelIndicator(skill.level);
-                    return (
-                      <motion.div
-                        key={skillIdx}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: catIdx * 0.1 + skillIdx * 0.05 }}
-                        whileHover={{ x: 5, backgroundColor: 'var(--muted)' }}
-                        className="p-4 rounded-xl glass transition-all duration-300 group"
-                      >
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <h5 className="font-bold text-sm">{skill.name}</h5>
-                              <span className={`text-[10px] px-2 py-0.5 rounded-full ${levelInfo.color} text-white font-bold uppercase tracking-wider`}>
+                  <div className="grid gap-4">
+                    {category.skills.map((skill, skillIdx) => {
+                      const levelInfo = getLevelIndicator(skill.level);
+                      return (
+                        <motion.div
+                          key={skillIdx}
+                          whileHover={{ x: 10 }}
+                          className="glass-card p-6 border-white/10 group transition-all duration-500"
+                        >
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              <h5 className="font-black text-lg tracking-tight group-hover:text-primary transition-colors">{skill.name}</h5>
+                              <span className={`text-[8px] px-3 py-1 rounded-full ${levelInfo.color} text-white font-black uppercase tracking-[0.2em]`}>
                                 {levelInfo.label}
                               </span>
                             </div>
-                            <p className="text-xs text-muted-foreground leading-relaxed">
-                              {skill.description}
-                            </p>
+                            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Expertise Verified</span>
                           </div>
-                        </div>
-
-                        {/* Visual Level Indicator - Dots */}
-                        <div className="flex items-center gap-1 mt-3">
-                          {[...Array(4)].map((_, i) => (
-                            <motion.div
-                              key={i}
-                              initial={{ scale: 0 }}
-                              whileInView={{ scale: 1 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: catIdx * 0.1 + skillIdx * 0.05 + i * 0.05 }}
-                              className={`h-1.5 flex-1 rounded-full ${i < levelInfo.dots ? levelInfo.color : 'bg-muted'
-                                }`}
-                            />
-                          ))}
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Call to Action */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="pt-6"
-          >
-            <div className="glass-card p-6 rounded-2xl border-2 border-[var(--primary)]/20">
-              <p className="text-sm text-muted-foreground italic">
-                "I believe in writing clean, maintainable code and staying ahead of the curve. My approach combines creative design with robust engineering to deliver exceptional user experiences."
-              </p>
+                          <p className="text-sm text-muted-foreground font-medium mb-6 leading-relaxed">
+                            {skill.description}
+                          </p>
+                          <div className="flex gap-2">
+                            {[...Array(4)].map((_, i) => (
+                              <div 
+                                key={i} 
+                                className={`h-1.5 flex-1 rounded-full transition-all duration-1000 ${i < levelInfo.dots ? levelInfo.color : 'bg-muted/10'}`} 
+                                style={{ transitionDelay: `${i * 100}ms` }}
+                              />
+                            ))}
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              ))}
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
+
   );
 }

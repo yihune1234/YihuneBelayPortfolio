@@ -73,57 +73,73 @@ export function ThemeSelector() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-xl glass hover:bg-white/20 transition-all active:scale-95"
-        aria-label="Change theme"
-        title="Change color theme"
+        className="p-3 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95 group border-white/20"
+        aria-label="Toggle Theme Ecosystem"
       >
-        <Palette className="w-5 h-5" style={{ color: 'var(--primary)' }} />
+        <Palette className="w-5 h-5 text-primary group-hover:rotate-180 transition-transform duration-700" />
       </button>
 
       <AnimatePresence>
         {isOpen && (
           <>
             <div
-              className="fixed inset-0 z-40"
+              className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]"
               onClick={() => setIsOpen(false)}
             />
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -10 }}
-              className="absolute right-0 mt-4 w-72 md:w-80 glass-card p-4 z-50 rounded-2xl border border-white/20"
+              initial={{ opacity: 0, scale: 0.95, y: -20, rotateX: -10 }}
+              animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -20, rotateX: -10 }}
+              className="absolute right-0 mt-6 w-80 glass-card p-6 z-50 rounded-[2.5rem] border-white/30 shadow-2xl backdrop-blur-3xl perspective-1000"
             >
-              <div className="mb-4">
-                <h3 className="font-bold text-lg flex items-center gap-2">
-                  <Palette className="w-5 h-5 text-[var(--primary)]" />
-                  Color Palette
-                </h3>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Personalize your viewing experience
-                </p>
+              <div className="mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <Palette className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-lg tracking-tight">Visual Identity</h3>
+                    <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground">Select Environment</p>
+                  </div>
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-4">
                 {themes.map((theme) => (
                   <button
                     key={theme.id}
                     onClick={() => handleThemeChange(theme.id)}
-                    className={`p-3 rounded-xl border-2 transition-all text-left flex flex-col gap-2 ${
+                    className={`relative p-4 rounded-3xl border-2 transition-all group overflow-hidden ${
                       currentTheme === theme.id
-                        ? 'border-[var(--primary)] bg-[var(--primary)]/5'
-                        : 'border-transparent hover:border-white/20 bg-black/5 dark:bg-white/5'
+                        ? 'border-primary bg-primary/5'
+                        : 'border-white/5 hover:border-white/20 bg-white/5'
                     }`}
                   >
-                    <div
-                      className={`w-full h-12 rounded-lg bg-gradient-to-br ${theme.gradient} shadow-sm`}
-                    />
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold">{theme.name}</span>
-                      {currentTheme === theme.id && <Check className="w-3 h-3 text-[var(--primary)]" />}
+                    <div className="flex items-center gap-4 relative z-10">
+                      <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${theme.gradient} shadow-lg shadow-black/20`} />
+                      <div className="flex-1 text-left">
+                        <div className="flex items-center justify-between">
+                          <span className="font-black text-sm uppercase tracking-wider">{theme.name}</span>
+                          {currentTheme === theme.id && (
+                            <motion.div layoutId="checkIcon">
+                               <Check className="w-4 h-4 text-primary" />
+                            </motion.div>
+                          )}
+                        </div>
+                        <p className="text-[10px] text-muted-foreground font-medium mt-1 leading-tight">{theme.description}</p>
+                      </div>
                     </div>
+                    {/* Animated Glow on Hover */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                   </button>
                 ))}
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-white/10">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-center text-muted-foreground italic">
+                  Systems Aesthetic: {currentThemeData.name}
+                </p>
               </div>
             </motion.div>
           </>
@@ -132,3 +148,4 @@ export function ThemeSelector() {
     </div>
   );
 }
+

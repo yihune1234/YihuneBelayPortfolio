@@ -4,19 +4,37 @@ import { motion } from 'motion/react';
 export function TelegramFloatingButton() {
   return (
     <motion.a
-      href="https://t.me/@Y13bel"
+      href="https://t.me/Y13bel"
       target="_blank"
       rel="noopener noreferrer"
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3, delay: 1 }}
-      className="fixed left-6 bottom-6 z-40 w-14 h-14 bg-[#0088cc] hover:bg-[#0077b3] text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center group"
+      initial={{ opacity: 0, scale: 0, x: -50 }}
+      animate={{ opacity: 1, scale: 1, x: 0 }}
+      transition={{ 
+        type: 'spring',
+        stiffness: 260,
+        damping: 20,
+        delay: 1.5 
+      }}
+      className="fixed left-8 bottom-8 z-[100] group"
       aria-label="Contact on Telegram"
     >
-      <Send className="w-6 h-6" />
-      <span className="absolute left-full ml-3 bg-slate-800 text-white px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-        Message me on Telegram
-      </span>
+      <div className="absolute inset-0 bg-primary/40 rounded-full blur-xl group-hover:blur-2xl transition-all animate-pulse" />
+      
+      <div className="relative w-16 h-16 bg-gradient-to-br from-[#0088cc] to-[#00b2ff] text-white rounded-[1.5rem] shadow-2xl flex items-center justify-center transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 border border-white/20">
+        <Send className="w-8 h-8 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+        
+        {/* Animated Badge */}
+        <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-bounce" />
+      </div>
+
+      <div className="absolute left-full ml-6 top-1/2 -translate-y-1/2 flex items-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-4 group-hover:translate-x-0 pointer-events-none">
+        <div className="whitespace-nowrap glass-card !px-6 !py-3 !rounded-2xl border-white/20 shadow-2xl">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-1">Direct Signal</p>
+          <p className="font-black text-sm text-foreground">Initiate Telegram Dialogue</p>
+        </div>
+        <div className="w-4 h-px bg-white/20" />
+      </div>
     </motion.a>
   );
 }
+

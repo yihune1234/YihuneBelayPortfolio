@@ -63,7 +63,7 @@ export function Header({ activeSection, setActiveSection }) {
               <span className="text-xl font-black tracking-tighter uppercase leading-none">
                 Yihune<span className="text-primary italic">Belay</span>
               </span>
-              <span className="text-[8px] font-black uppercase tracking-[0.4em] text-muted-foreground mt-1">Portfolio v2.0</span>
+              <span className="text-[8px] font-black uppercase tracking-[0.4em] text-muted-foreground mt-1">Portfolio </span>
             </div>
           </motion.button>
 

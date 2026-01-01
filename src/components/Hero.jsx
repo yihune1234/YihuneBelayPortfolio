@@ -78,12 +78,12 @@ export function Hero({ setActiveSection }) {
               transition={{ delay: 0.3 }}
               className="text-6xl md:text-8xl font-black mb-8 tracking-tighter leading-[0.9] text-foreground relative"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent opacity-20 blur-sm animate-pulse">Crafting</span>
-              Crafting <br />
-              <span className="animated-gradient-text relative z-10">Exceptional</span> <br />
+              <span className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent opacity-20 blur-sm animate-pulse">Transforming</span>
+              Transforming <br />
+              <span className="animated-gradient-text relative z-10">Ideas Into</span> <br />
               <span className="relative">
-                <span className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent opacity-30 blur-md">Software.</span>
-                <span className="relative z-10">Software.</span>
+                <span className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent opacity-30 blur-md">Motion.</span>
+                <span className="relative z-10">Reality.</span>
               </span>
             </motion.h1>
 

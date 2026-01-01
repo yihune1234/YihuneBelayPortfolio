@@ -91,9 +91,16 @@ export function Hero({ setActiveSection }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-xl md:text-2xl text-muted-foreground/80 mb-12 leading-relaxed max-w-2xl font-medium"
+              className="text-xl md:text-2xl text-muted-foreground/80 mb-12 leading-relaxed max-w-2xl font-medium relative"
             >
-              I am <span className="text-foreground font-bold">Yihune Belay</span>, a visionary architect of the digital web, specialized in building experiences that <span className="text-primary italic">inspire</span>.
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-purple-500/10 to-cyan-500/10 rounded-2xl blur-xl -z-10" />
+              I am <span className="text-foreground font-bold relative group">
+                <span className="absolute inset-0 bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">Yihune Belay</span>
+                <span className="relative z-10">Yihune Belay</span>
+              </span>, a <span className="italic text-primary/80">visionary architect</span> of the digital web, specialized in <span className="font-semibold bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">building experiences</span> that <span className="text-primary italic font-bold relative group">
+                <span className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">inspire</span>
+                <span className="relative z-10">inspire</span>
+              </span>.
             </motion.p>
 
             <motion.div
@@ -109,11 +116,17 @@ export function Hero({ setActiveSection }) {
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <span className="relative z-10 flex items-center gap-3">
-                  <Sparkles className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
-                  Explore Portfolios <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                  <div className="relative">
+                    <Sparkles className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
+                    <div className="absolute inset-0 bg-primary/20 rounded-full blur-md animate-pulse" />
+                  </div>
+                  <span className="font-bold tracking-wide">Explore Portfolios</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                 </span>
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-500 opacity-0 group-hover:opacity-30 blur-lg transition-opacity duration-300 rounded-2xl" />
               </motion.button>
 
               <motion.a
@@ -124,8 +137,15 @@ export function Hero({ setActiveSection }) {
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <Download className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                <span className="relative z-10">Get Resume</span>
+                <div className="absolute inset-0 border border-cyan-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
+                <div className="relative z-10 flex items-center gap-3">
+                  <div className="relative">
+                    <Download className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                    <div className="absolute inset-0 bg-cyan-500/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                  <span className="font-bold tracking-wide">Get Resume</span>
+                </div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-20 blur-lg transition-opacity duration-300 rounded-2xl" />
               </motion.a>
             </motion.div>
 
@@ -136,9 +156,9 @@ export function Hero({ setActiveSection }) {
               className="flex items-center gap-6"
             >
               {[
-                { icon: Github, href: 'https://github.com/yihune1234', label: 'GitHub', color: 'from-gray-600 to-gray-800' },
-                { icon: Linkedin, href: 'https://www.linkedin.com/in/yihune-belay-30b0a4383', label: 'LinkedIn', color: 'from-blue-600 to-blue-800' },
-                { icon: Send, href: 'https://t.me/Y13bel', label: 'Telegram', color: 'from-cyan-500 to-blue-500' }
+                { icon: Github, href: 'https://github.com/yihune1234', label: 'GitHub', color: 'from-gray-600 to-gray-800', glow: 'shadow-gray-500/50' },
+                { icon: Linkedin, href: 'https://www.linkedin.com/in/yihune-belay-30b0a4383', label: 'LinkedIn', color: 'from-blue-600 to-blue-800', glow: 'shadow-blue-500/50' },
+                { icon: Send, href: 'https://t.me/Y13bel', label: 'Telegram', color: 'from-cyan-500 to-blue-500', glow: 'shadow-cyan-500/50' }
               ].map((social, idx) => (
                 <motion.a
                   key={idx}
@@ -151,8 +171,12 @@ export function Hero({ setActiveSection }) {
                   aria-label={social.label}
                 >
                   <div className={`absolute inset-0 bg-gradient-to-br ${social.color} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
-                  <social.icon className="w-6 h-6 relative z-10 group-hover:text-white transition-colors" />
-                  <div className="absolute inset-0 bg-white/5 scale-0 group-hover:scale-100 transition-transform duration-500 rounded-2xl" />
+                  <div className={`absolute -inset-1 bg-gradient-to-br ${social.color} opacity-0 group-hover:opacity-30 blur-lg transition-opacity duration-300 rounded-2xl`} />
+                  <div className="relative z-10">
+                    <social.icon className="w-6 h-6 relative group-hover:text-white transition-colors" />
+                    <div className="absolute inset-0 bg-white/10 scale-0 group-hover:scale-100 transition-transform duration-500 rounded-2xl" />
+                  </div>
+                  <div className={`absolute inset-0 ${social.glow} blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-300 rounded-2xl`} />
                 </motion.a>
               ))}
             </motion.div>

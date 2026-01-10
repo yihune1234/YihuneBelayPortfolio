@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Project = require('../models/Project');
 const auth = require('../middleware/auth');
-const upload = require('../middleware/upload');
+const { upload, cloudinaryUpload } = require('../middleware/upload');
 
 // Get all projects
 router.get('/', async (req, res) => {
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 // Create project (Admin only)
-router.post('/', auth, upload.single('imageFile'), async (req, res) => {
+router.post('/', auth, upload.single('imageFile'), cloudinaryUpload, async (req, res) => {
     try {
         const projectData = { ...req.body };
 
@@ -28,9 +28,8 @@ router.post('/', auth, upload.single('imageFile'), async (req, res) => {
             }
         }
 
-        if (req.file) {
-            // Store the relative path to the image
-            projectData.image = `/uploads/${req.file.filename}`;
+        if (req.file && req.file.cloudinaryUrl) {
+            projectData.image = req.file.cloudinaryUrl;
         }
 
         const project = new Project(projectData);
@@ -43,7 +42,7 @@ router.post('/', auth, upload.single('imageFile'), async (req, res) => {
 });
 
 // Update project (Admin only)
-router.put('/:id', auth, upload.single('imageFile'), async (req, res) => {
+router.put('/:id', auth, upload.single('imageFile'), cloudinaryUpload, async (req, res) => {
     try {
         const projectData = { ...req.body };
 
@@ -56,8 +55,8 @@ router.put('/:id', auth, upload.single('imageFile'), async (req, res) => {
             }
         }
 
-        if (req.file) {
-            projectData.image = `/uploads/${req.file.filename}`;
+        if (req.file && req.file.cloudinaryUrl) {
+            projectData.image = req.file.cloudinaryUrl;
         }
 
         const updatedProject = await Project.findByIdAndUpdate(req.params.id, projectData, { new: true });

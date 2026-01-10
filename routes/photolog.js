@@ -1,6 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const PhotoLog = require('../models/PhotoLog');
+const { upload, cloudinaryUpload } = require('../middleware/upload');
+const auth = require('../middleware/auth');
+
+// Upload photo to Cloudinary (Admin only)
+router.post('/upload', auth, upload.single('image'), cloudinaryUpload, async (req, res) => {
+    try {
+        if (!req.file || !req.file.cloudinaryUrl) {
+            return res.status(400).json({ message: 'No image uploaded or upload failed' });
+        }
+
+        res.json({
+            message: 'Image uploaded successfully',
+            url: req.file.cloudinaryUrl,
+            public_id: req.file.public_id
+        });
+    } catch (error) {
+        console.error('PhotoLog Upload Error:', error);
+        res.status(500).json({ message: 'Error uploading image', error: error.message });
+    }
+});
 
 // Get all photos with their likes and comments count
 router.get('/', async (req, res) => {

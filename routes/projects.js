@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Project = require('../models/Project');
 const auth = require('../middleware/auth');
-const upload = require('../middleware/upload');
+const { upload, cloudinaryUpload } = require('../middleware/upload');
 
 // Get all projects (public)
 router.get('/', async (req, res) => {
@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create project (admin only)
-router.post('/', auth, upload.single('image'), async (req, res) => {
+router.post('/', auth, upload.single('image'), cloudinaryUpload, async (req, res) => {
     try {
         const { title, description, technologies, githubUrl, demoUrl, role, isMini } = req.body;
 
@@ -39,11 +39,11 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
         if (!githubUrl || !githubUrl.trim()) missing.push('githubUrl');
         if (!demoUrl || !demoUrl.trim()) missing.push('demoUrl');
         if (typeof isMini === 'undefined') missing.push('isMini');
-        if (!req.file) missing.push('image');
+        if (!req.file && !req.body.image) missing.push('image');
 
         let parsedTech = [];
         try {
-            parsedTech = JSON.parse(technologies || '[]');
+            parsedTech = typeof technologies === 'string' ? JSON.parse(technologies || '[]') : (technologies || []);
         } catch (e) {
             return res.status(400).json({ message: 'Technologies must be valid JSON array' });
         }
@@ -64,8 +64,10 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
             isMini: isMini === 'true'
         };
 
-        if (req.file) {
-            projectData.image = `/uploads/${req.file.filename}`;
+        if (req.file && req.file.cloudinaryUrl) {
+            projectData.image = req.file.cloudinaryUrl;
+        } else if (req.body.image) {
+            projectData.image = req.body.image;
         }
 
         const project = new Project(projectData);
@@ -78,7 +80,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
 });
 
 // Update project (admin only)
-router.put('/:id', auth, upload.single('image'), async (req, res) => {
+router.put('/:id', auth, upload.single('image'), cloudinaryUpload, async (req, res) => {
     try {
         const { title, description, technologies, githubUrl, demoUrl, role, isMini } = req.body;
         
@@ -92,8 +94,10 @@ router.put('/:id', auth, upload.single('image'), async (req, res) => {
             isMini: isMini === 'true' || isMini === true
         };
 
-        if (req.file) {
-            updateData.image = `/uploads/${req.file.filename}`;
+        if (req.file && req.file.cloudinaryUrl) {
+            updateData.image = req.file.cloudinaryUrl;
+        } else if (req.body.image) {
+            updateData.image = req.body.image;
         }
 
         const project = await Project.findByIdAndUpdate(

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Trash2, RefreshCw, Image, MessageCircle, Heart, Edit2, X, Check } from 'lucide-react';
+import CloudinaryImage from '../components/CloudinaryImage.jsx';
 
 const API_URL = 'https://portfoliobackend-a6ah.onrender.com/api/photolog';
 
@@ -316,10 +317,12 @@ export function PhotoLogManager() {
                         ) : (
                             <>
                                 <div className="relative aspect-video">
-                                    <img
-                                        src={getImageUrl(photo.url)}
+                                    <CloudinaryImage
+                                        src={photo.url}
                                         alt={photo.title}
                                         className="w-full h-full object-cover"
+                                        width={800}
+                                        height={450}
                                     />
                                     <div className="absolute top-2 right-2">
                                         <span className="px-3 py-1 bg-black/70 text-white text-xs rounded-full font-bold">

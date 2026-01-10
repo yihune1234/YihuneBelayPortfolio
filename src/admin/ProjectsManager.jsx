@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Plus, Edit, Trash2, X, Upload, ExternalLink, FolderKanban, Sparkles, Globe, Github } from 'lucide-react';
+import CloudinaryImage from '../components/CloudinaryImage.jsx';
 
 export function ProjectsManager({ showAddProject, setShowAddProject }) {
   const [projects, setProjects] = useState([]);
@@ -21,22 +22,26 @@ export function ProjectsManager({ showAddProject, setShowAddProject }) {
 
   const getImageUrl = (imagePath) => {
     if (!imagePath) return '';
-    if (imagePath.startsWith('http')) return imagePath;
     if (imagePath.startsWith('data:')) return imagePath; // For local previews
-
-    // Base URL for the backend
-    const BASE_URL = 'https://portfoliobackend-a6ah.onrender.com';
-
-    // Remove leading slash
-    const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
-
-    // If it already contains 'uploads/', just prepend base URL
-    if (cleanPath.startsWith('uploads/')) {
-      return `${BASE_URL}/${cleanPath}`;
+    
+    // If it's already a Cloudinary URL, return as is
+    if (imagePath.startsWith('http') && imagePath.includes('res.cloudinary.com')) {
+      return imagePath;
     }
 
-    // Otherwise prepend /uploads/
-    return `${BASE_URL}/uploads/${cleanPath}`;
+    let originalUrl = imagePath;
+    if (!imagePath.startsWith('http')) {
+      const BASE_URL = 'https://portfoliobackend-a6ah.onrender.com';
+      const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+      if (cleanPath.startsWith('uploads/')) {
+        originalUrl = `${BASE_URL}/${cleanPath}`;
+      } else {
+        originalUrl = `${BASE_URL}/uploads/${cleanPath}`;
+      }
+    }
+
+    // Wrap in Cloudinary Fetch for automatic optimization
+    return `https://res.cloudinary.com/dqcrqtzz6/image/fetch/f_auto,q_auto/${originalUrl}`;
   };
 
   useEffect(() => {
@@ -189,10 +194,12 @@ export function ProjectsManager({ showAddProject, setShowAddProject }) {
             className="glass-card group flex flex-col h-full"
           >
             <div className="relative aspect-video overflow-hidden rounded-xl mb-4">
-              <img
-                src={project.image ? getImageUrl(project.image) : 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop'}
+              <CloudinaryImage
+                src={project.image}
                 alt={project.title}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                width={800}
+                height={450}
               />
               {project.isMini && (
                 <div className="absolute top-3 right-3 px-2 py-1 glass rounded-lg text-[10px] font-black uppercase tracking-widest text-[var(--primary)]">
@@ -322,7 +329,12 @@ export function ProjectsManager({ showAddProject, setShowAddProject }) {
                   <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Project Banner</label>
                   {imagePreview ? (
                     <div className="relative aspect-video rounded-2xl overflow-hidden shadow-xl border-2 border-[var(--primary)]/20">
-                      <img src={imagePreview} className="w-full h-full object-cover" />
+                      <CloudinaryImage 
+                        src={imagePreview} 
+                        className="w-full h-full object-cover" 
+                        width={1000} 
+                        height={600} 
+                      />
                       <button
                         type="button"
                         onClick={() => { setImagePreview(null); setFormData({ ...formData, image: null }); }}

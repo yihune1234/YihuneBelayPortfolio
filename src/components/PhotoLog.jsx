@@ -1,7 +1,6 @@
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { Camera, Heart, MessageCircle, Zap, Star, Send, X } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
-import CloudinaryImage from './CloudinaryImage.jsx';
 
 const API_URL = 'https://portfoliobackend-a6ah.onrender.com/api/photolog';
 
@@ -295,12 +294,10 @@ export function PhotoLog() {
                     >
                         {/* Image Engine */}
                         <div className="absolute inset-0 scale-110 group-hover:scale-100 transition-transform duration-1000">
-                            <CloudinaryImage
-                                src={photo.url}
+                            <img
+                                src={getImageUrl(photo.url)}
                                 alt={photo.title}
                                 className="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0"
-                                width={600}
-                                height={800}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
                         </div>
@@ -379,12 +376,10 @@ export function PhotoLog() {
                         >
                             {/* Visual Half */}
                             <div className="lg:w-1/2 relative bg-black">
-                                <CloudinaryImage
-                                    src={selectedPhoto.url}
+                                <img
+                                    src={getImageUrl(selectedPhoto.url)}
                                     alt={selectedPhoto.title}
                                     className="w-full h-full object-cover opacity-80"
-                                    width={1000}
-                                    height={1200}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
                                 <div className="absolute bottom-10 left-10 text-white">

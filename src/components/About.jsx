@@ -94,15 +94,8 @@ export function About() {
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               className="absolute -bottom-8 -right-8 glass-card p-6 border-white/30 backdrop-blur-3xl rounded-[2rem] shadow-2xl"
             >
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
-                  <span className="text-white font-black text-xl italic">3+</span>
-                </div>
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Years Of</p>
-                  <p className="font-black text-lg">Digital Craft</p>
-                </div>
-              </div>
+        
+            
             </motion.div>
           </div>
 

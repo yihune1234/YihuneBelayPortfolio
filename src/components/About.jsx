@@ -149,7 +149,7 @@ export function About() {
 
           {/* Enhanced Skills Catalog */}
           <div className="space-y-10">
-            <h3 className="text-3xl font-black tracking-tight">Technical Arsenal</h3>
+            <h3 className="text-3xl font-black tracking-tight">Technical <span className='text-gray-400'>skills</span></h3>
 
             <div className="grid gap-8">
               {skillCategories.map((category, catIdx) => (

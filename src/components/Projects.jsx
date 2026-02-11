@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ExternalLink, Github, Eye, Code, ArrowRight, ArrowLeft } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
+import CloudinaryImage from './CloudinaryImage.jsx';
 
 export function Projects() {
   const [projects, setProjects] = useState([]);
@@ -20,21 +21,26 @@ export function Projects() {
 
   const getImageUrl = (imagePath) => {
     if (!imagePath) return '';
-    if (imagePath.startsWith('http')) return imagePath;
-
-    // Base URL for the backend
-    const BASE_URL = 'https://portfoliobackend-a6ah.onrender.com';
-
-    // Remove leading slash
-    const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
-
-    // If it already contains 'uploads/', just prepend base URL
-    if (cleanPath.startsWith('uploads/')) {
-      return `${BASE_URL}/${cleanPath}`;
+    
+    // If it's already a Cloudinary URL, return as is
+    if (imagePath.startsWith('http') && imagePath.includes('res.cloudinary.com')) {
+      return imagePath;
     }
 
-    // Otherwise prepend /uploads/
-    return `${BASE_URL}/uploads/${cleanPath}`;
+    let originalUrl = imagePath;
+    if (!imagePath.startsWith('http')) {
+      const BASE_URL = 'https://portfoliobackend-a6ah.onrender.com';
+      const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+      if (cleanPath.startsWith('uploads/')) {
+        originalUrl = `${BASE_URL}/${cleanPath}`;
+      } else {
+        originalUrl = `${BASE_URL}/uploads/${cleanPath}`;
+      }
+    }
+
+    // Wrap in Cloudinary Fetch for automatic optimization (Format & Quality)
+    // This allows local/external images to be served via Cloudinary's CDN
+    return `https://res.cloudinary.com/dqcrqtzz6/image/fetch/f_auto,q_auto/${originalUrl}`;
   };
 
   const fetchProjects = async () => {
@@ -117,10 +123,12 @@ export function Projects() {
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32" />
                 
                 <div className="relative img-hover-scale aspect-video lg:aspect-auto shadow-2xl">
-                  <img
-                    src={getImageUrl(project.image)}
+                  <CloudinaryImage
+                    src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover"
+                    width={1000}
+                    height={600}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
                 </div>
@@ -177,10 +185,12 @@ export function Projects() {
             onClick={() => setSelectedProject(project)}
           >
             <div className="relative aspect-[16/10] img-hover-scale m-4 mb-0">
-              <img
-                src={getImageUrl(project.image)}
+              <CloudinaryImage
+                src={project.image}
                 alt={project.title}
                 className="w-full h-full object-cover"
+                width={800}
+                height={500}
               />
               <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
                 <div className="p-4 glass rounded-2xl text-primary scale-90 group-hover:scale-100 transition-transform">
@@ -231,10 +241,12 @@ export function Projects() {
               onClick={e => e.stopPropagation()}
             >
               <div className="md:w-3/5 relative group h-64 md:h-auto overflow-hidden">
-                <img
-                  src={getImageUrl(selectedProject.image)}
+                <CloudinaryImage
+                  src={selectedProject.image}
                   alt={selectedProject.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  width={1000}
+                  height={1000}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-background/20 to-transparent" />
               </div>

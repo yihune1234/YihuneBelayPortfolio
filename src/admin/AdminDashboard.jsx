@@ -11,14 +11,15 @@ import {
   TrendingUp,
   Eye,
   Mail,
-  Home
+  Home,
+  Globe
 } from 'lucide-react';
 import { ProjectsManager } from './ProjectsManager';
 import { MessagesManager } from './MessagesManager';
 import { AdminSettings } from './AdminSettings';
 import { PhotoLogManager } from './PhotoLogManager';
 
-export function AdminDashboard({ onLogout }) {
+export function AdminDashboard({ onLogout, onBack }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [admin, setAdmin] = useState(null);
   const [showAddProject, setShowAddProject] = useState(false);
@@ -163,6 +164,13 @@ export function AdminDashboard({ onLogout }) {
           <h2 className="text-xl font-black uppercase tracking-widest">{activeTab}</h2>
 
           <div className="flex items-center gap-4">
+            <button
+              onClick={onBack}
+              className="p-2 px-4 glass rounded-xl text-sm font-bold flex items-center gap-2 hover:text-primary transition-all"
+              title="View Live Website"
+            >
+              <Globe size={18} /> <span className="hidden md:inline">View Website</span>
+            </button>
             <button
               onClick={() => setShowAddProject(true)}
               className="btn-primary !py-2 !px-4 text-sm flex items-center gap-2"

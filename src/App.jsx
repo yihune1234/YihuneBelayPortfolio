@@ -94,7 +94,10 @@ export default function App() {
               transition={{ duration: 0.3 }}
             >
               {isAdminAuthenticated ? (
-                <AdminDashboard onLogout={handleAdminLogout} />
+                <AdminDashboard 
+                  onLogout={handleAdminLogout} 
+                  onBack={() => setActiveSection('home')}
+                />
               ) : (
                 <AdminLogin 
                   onLogin={handleAdminLogin} 

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Lock, User, Eye, EyeOff, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
+import { Lock, User, Eye, EyeOff, ShieldCheck, ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
 
-export function AdminLogin({ onLogin }) {
+export function AdminLogin({ onLogin, onBack }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -44,11 +44,19 @@ export function AdminLogin({ onLogin }) {
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 blur-[120px] rounded-full -z-10" />
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-md glass-card p-10 md:p-12"
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        className="w-full max-w-md glass-card p-10 md:p-12 relative"
       >
-        <div className="text-center mb-10">
+        <button
+          onClick={onBack}
+          className="absolute top-8 left-8 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors group"
+        >
+          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+          Back
+        </button>
+
+        <div className="text-center mb-10 mt-4">
           <div className="w-20 h-20 rounded-3xl bg-[var(--primary)]/10 flex items-center justify-center mx-auto mb-6">
             <ShieldCheck size={40} className="text-[var(--primary)]" />
           </div>

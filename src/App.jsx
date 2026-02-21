@@ -96,7 +96,10 @@ export default function App() {
               {isAdminAuthenticated ? (
                 <AdminDashboard onLogout={handleAdminLogout} />
               ) : (
-                <AdminLogin onLogin={handleAdminLogin} />
+                <AdminLogin 
+                  onLogin={handleAdminLogin} 
+                  onBack={() => setActiveSection('home')}
+                />
               )}
             </motion.div>
           </AnimatePresence>

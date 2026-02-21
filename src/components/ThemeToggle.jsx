@@ -31,35 +31,27 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className="p-3 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95 group relative overflow-hidden border-white/20 shadow-xl"
-      aria-label="Synchronize Environment"
+      className={`relative p-2 rounded-xl glass border-white/20 transition-all duration-500 hover:scale-105 active:scale-95 group overflow-hidden ${theme === 'dark' ? 'bg-slate-800' : 'bg-white/10'}`}
+      aria-label="Toggle Light/Dark Mode"
     >
-      <div className={`absolute inset-0 opacity-20 blur-lg transition-colors duration-500 ${theme === 'dark' ? 'bg-yellow-500' : 'bg-indigo-500'}`} />
+      <div className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 ${theme === 'dark' ? 'bg-yellow-500' : 'bg-primary'}`} />
       
       <AnimatePresence mode="wait">
         <motion.div
           key={theme}
-          initial={{ y: 30, opacity: 0, rotate: -45 }}
-          animate={{ y: 0, opacity: 1, rotate: 0 }}
-          exit={{ y: -30, opacity: 0, rotate: 45 }}
-          transition={{ 
-            type: "spring",
-            stiffness: 260,
-            damping: 20
-          }}
+          initial={{ y: 10, opacity: 0, scale: 0.5 }}
+          animate={{ y: 0, opacity: 1, scale: 1 }}
+          exit={{ y: -10, opacity: 0, scale: 0.5 }}
+          transition={{ duration: 0.4, ease: "backOut" }}
           className="relative z-10"
         >
           {theme === 'dark' ? (
-            <Sun className="w-5 h-5 text-yellow-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]" />
+            <Sun className="w-5 h-5 text-yellow-500 drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]" />
           ) : (
-            <Moon className="w-5 h-5 text-indigo-400 drop-shadow-[0_0_8px_rgba(129,140,248,0.5)]" />
+            <Moon className="w-5 h-5 text-primary drop-shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]" />
           )}
         </motion.div>
       </AnimatePresence>
-
-      {/* Decorative HUD Elements */}
-      <div className="absolute top-0 right-0 w-1 h-1 bg-white/40 rounded-full m-1" />
-      <div className="absolute bottom-0 left-0 w-1 h-1 bg-white/20 rounded-full m-1" />
     </button>
   );
 }

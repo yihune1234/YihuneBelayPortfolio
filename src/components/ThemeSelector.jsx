@@ -70,81 +70,59 @@ export function ThemeSelector() {
   const currentThemeData = themes.find(t => t.id === currentTheme);
 
   return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="p-3 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95 group border-white/20"
-        aria-label="Toggle Theme Ecosystem"
-      >
-        <Palette className="w-5 h-5 text-primary group-hover:rotate-180 transition-transform duration-700" />
-      </button>
+    <div className="relative flex items-center">
+      <div className="flex items-center glass rounded-2xl border-white/20 p-1 group">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={`p-2 rounded-xl transition-all duration-500 ${isOpen ? 'bg-primary text-white rotate-90' : 'hover:bg-white/10 text-primary'}`}
+          title="Customize Theme"
+        >
+          <Palette className="w-5 h-5" />
+        </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <>
-            <div
-              className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]"
-              onClick={() => setIsOpen(false)}
-            />
-
+        <AnimatePresence>
+          {isOpen && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: -20, rotateX: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -20, rotateX: -10 }}
-              className="absolute right-0 mt-6 w-80 glass-card p-6 z-50 rounded-[2.5rem] border-white/30 shadow-2xl backdrop-blur-3xl perspective-1000"
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: 'auto', opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              className="flex items-center overflow-hidden"
             >
-              <div className="mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Palette className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-black text-lg tracking-tight">Visual Identity</h3>
-                    <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground">Select Environment</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4">
+              <div className="flex items-center gap-2 px-3 border-l border-white/10 ml-1">
                 {themes.map((theme) => (
                   <button
                     key={theme.id}
                     onClick={() => handleThemeChange(theme.id)}
-                    className={`relative p-4 rounded-3xl border-2 transition-all group overflow-hidden ${
-                      currentTheme === theme.id
-                        ? 'border-primary bg-primary/5'
-                        : 'border-white/5 hover:border-white/20 bg-white/5'
-                    }`}
+                    className="relative group/swatch"
+                    title={theme.name}
                   >
-                    <div className="flex items-center gap-4 relative z-10">
-                      <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${theme.gradient} shadow-lg shadow-black/20`} />
-                      <div className="flex-1 text-left">
-                        <div className="flex items-center justify-between">
-                          <span className="font-black text-sm uppercase tracking-wider">{theme.name}</span>
-                          {currentTheme === theme.id && (
-                            <motion.div layoutId="checkIcon">
-                               <Check className="w-4 h-4 text-primary" />
-                            </motion.div>
-                          )}
-                        </div>
-                        <p className="text-[10px] text-muted-foreground font-medium mt-1 leading-tight">{theme.description}</p>
-                      </div>
-                    </div>
-                    {/* Animated Glow on Hover */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                    <motion.div
+                      whileHover={{ scale: 1.2, y: -2 }}
+                      whileTap={{ scale: 0.9 }}
+                      className={`w-6 h-6 rounded-full bg-gradient-to-br ${theme.gradient} border-2 transition-all ${
+                        currentTheme === theme.id ? 'border-white scale-110 shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]' : 'border-transparent opacity-60 hover:opacity-100 shadow-lg'
+                      }`}
+                    />
+                    {currentTheme === theme.id && (
+                      <motion.div
+                        layoutId="activeTheme"
+                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-white rounded-full"
+                      />
+                    )}
                   </button>
                 ))}
               </div>
-
-              <div className="mt-6 pt-6 border-t border-white/10">
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-center text-muted-foreground italic">
-                  Systems Aesthetic: {currentThemeData.name}
-                </p>
-              </div>
             </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {isOpen && (
+        <div 
+          className="fixed inset-0 z-[-1]" 
+          onClick={() => setIsOpen(false)} 
+        />
+      )}
     </div>
   );
 }

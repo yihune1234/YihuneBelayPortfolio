@@ -68,7 +68,7 @@ export function Hero({ setActiveSection }) {
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative z-10 flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-primary animate-ping shadow-lg shadow-primary/50" />
-                <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">Innovating Digital Frontiers</span>
+                <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">Software Engineer & Full-Stack Developer</span>
               </div>
             </motion.div>
 
@@ -78,12 +78,12 @@ export function Hero({ setActiveSection }) {
               transition={{ delay: 0.3 }}
               className="text-6xl md:text-8xl font-black mb-8 tracking-tighter leading-[0.9] text-foreground relative"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent opacity-20 blur-sm animate-pulse">Transforming</span>
-              Transforming <br />
-              <span className="animated-gradient-text relative z-10">Ideas Into</span> <br />
+              <span className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent opacity-20 blur-sm animate-pulse">Engineering</span>
+              Engineering <br />
+              <span className="animated-gradient-text relative z-10">Modern Digital</span> <br />
               <span className="relative">
-                <span className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent opacity-30 blur-md">Motion.</span>
-                <span className="relative z-10">Reality.</span>
+                <span className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent opacity-30 blur-md">Experiences.</span>
+                <span className="relative z-10">Experiences.</span>
               </span>
             </motion.h1>
 
@@ -94,13 +94,7 @@ export function Hero({ setActiveSection }) {
               className="text-xl md:text-2xl text-muted-foreground/80 mb-12 leading-relaxed max-w-2xl font-medium relative"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-purple-500/10 to-cyan-500/10 rounded-2xl blur-xl -z-10" />
-              I am <span className="text-foreground font-bold relative group">
-                <span className="absolute inset-0 bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">Yihune Belay</span>
-                <span className="relative z-10">Yihune Belay</span>
-              </span>, a <span className="italic text-primary/80">visionary architect</span> of the digital web, specialized in <span className="font-semibold bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">building experiences</span> that <span className="text-primary italic font-bold relative group">
-                <span className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">inspire</span>
-                <span className="relative z-10">inspire</span>
-              </span>.
+              I'm <span className="text-foreground font-bold">Yihune Belay</span>, a Software Engineer dedicated to building <span className="text-primary font-bold">high-performance</span> web applications through clean architecture and <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent font-bold">scalable solutions</span>.
             </motion.p>
 
             <motion.div

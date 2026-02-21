@@ -64,7 +64,7 @@ export function Contact() {
           viewport={{ once: true }}
           className="text-5xl md:text-7xl font-black mb-8 tracking-tighter"
         >
-          Let's <span className="text-gradient">Dialogue.</span>
+          Get In <span className="text-gradient">Touch.</span>
         </motion.h2>
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
@@ -143,7 +143,7 @@ export function Contact() {
           <form onSubmit={handleSubmit} className="grid gap-10">
             <div className="grid md:grid-cols-2 gap-10">
               <div className="space-y-3">
-                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Identify Yourself</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Full Name</label>
                 <input
                   type="text"
                   required
@@ -154,7 +154,7 @@ export function Contact() {
                 />
               </div>
               <div className="space-y-3">
-                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Pulse Point</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Email Address</label>
                 <input
                   type="email"
                   required
@@ -167,7 +167,7 @@ export function Contact() {
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Core Theme</label>
+              <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Subject</label>
               <input
                 type="text"
                 required
@@ -179,7 +179,7 @@ export function Contact() {
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Detailed Context</label>
+              <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Message</label>
               <textarea
                 required
                 placeholder="Let's dive into the specifics..."
@@ -213,7 +213,7 @@ export function Contact() {
                 </div>
               ) : (
                 <span className="flex items-center justify-center gap-3">
-                  Transmit Intent <Send className="w-6 h-6 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" />
+                  Send Message <Send className="w-6 h-6 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" />
                 </span>
               )}
             </button>

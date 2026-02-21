@@ -129,7 +129,7 @@ export function About() {
               viewport={{ once: true }}
               className="text-5xl md:text-7xl font-black tracking-tighter"
             >
-              The <span className="text-gradient">Architect.</span>
+              The <span className="text-gradient">Engineer.</span>
             </motion.h2>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -139,17 +139,17 @@ export function About() {
               className="space-y-6"
             >
               <p className="text-xl text-muted-foreground leading-relaxed font-medium">
-                Driven by a relentless pursuit of <span className="text-foreground font-black italic">elegance</span> in code and <span className="text-primary font-black">sophistication</span> in design.
+                Passionate about bridging the gap between <span className="text-foreground font-black italic">logic</span> and <span className="text-primary font-black">user experience</span>.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                As a senior Software Engineering student, I transcend traditional development boundaries to build complex digital ecosystems. My approach harmonizes robust backend logic with haute-couture frontend experiences.
+                As a Software Engineer, I specialize in developing robust full-stack applications that combine clean, efficient backend logic with interactive, high-performance frontend interfaces. My approach is driven by performance, scalability, and a deep commitment to technical excellence.
               </p>
             </motion.div>
           </div>
 
           {/* Enhanced Skills Catalog */}
           <div className="space-y-10">
-            <h3 className="text-3xl font-black tracking-tight">Technical <span className='text-gray-400'>skills</span></h3>
+            <h3 className="text-3xl font-black tracking-tight">Technical <span className='text-gray-400'>Proficiency</span></h3>
 
             <div className="grid gap-8">
               {skillCategories.map((category, catIdx) => (

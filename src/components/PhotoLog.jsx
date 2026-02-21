@@ -243,7 +243,7 @@ export function PhotoLog() {
                         viewport={{ once: true }}
                         className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 tracking-tighter"
                     >
-                        Visual <span className="text-gradient">Chronicle.</span>
+                        Project <span className="text-gradient">Highlights.</span>
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
@@ -252,7 +252,7 @@ export function PhotoLog() {
                         transition={{ delay: 0.1 }}
                         className="text-muted-foreground text-xl leading-relaxed italic"
                     >
-                        Capturing the essence of innovation, one frame at a time. A journey through lenses and logic.
+                        A visual journey through my latest engineering projects, design explorations, and technical milestones.
                     </motion.p>
                 </div>
                 <motion.div
@@ -392,9 +392,9 @@ export function PhotoLog() {
                             <div className="lg:w-1/2 flex flex-col bg-slate-900/50 backdrop-blur-3xl">
                                 <div className="p-10 border-b border-white/10 flex items-center justify-between">
                                     <div>
-                                        <h4 className="text-2xl font-black tracking-tight">Public Dialogue</h4>
+                                        <h4 className="text-2xl font-black tracking-tight">Discussion</h4>
                                         <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground mt-2">
-                                            {comments.length} Interactive Signals Received
+                                            {comments.length} Comments Received
                                         </p>
                                     </div>
                                     <button
@@ -444,7 +444,7 @@ export function PhotoLog() {
                                         <div className="grid grid-cols-2 gap-4">
                                           <input
                                               type="text"
-                                              placeholder="IDENTIFY"
+                                              placeholder="YOUR NAME"
                                               value={commentAuthor}
                                               onChange={(e) => setCommentAuthor(e.target.value)}
                                               className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 focus:border-primary focus:outline-none transition-all font-black text-xs tracking-widest uppercase"
@@ -457,7 +457,7 @@ export function PhotoLog() {
                                         <div className="flex gap-4">
                                             <input
                                                 type="text"
-                                                placeholder="TRANSMIT YOUR THOUGHTS..."
+                                                placeholder="WRITE A COMMENT..."
                                                 value={newComment}
                                                 onChange={(e) => setNewComment(e.target.value)}
                                                 required

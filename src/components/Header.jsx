@@ -67,7 +67,7 @@ export function Header({ activeSection, setActiveSection }) {
               <span className="text-xl font-black tracking-tighter uppercase leading-none">
                 Yihune<span className="text-primary italic">Belay</span>
               </span>
-              <span className="text-[8px] font-black uppercase tracking-[0.4em] text-muted-foreground mt-1">Software Engineer</span>
+              <span className="text-[7px] font-black uppercase tracking-[0.5em] text-muted-foreground/60 mt-0.5">Engineer</span>
             </div>
           </motion.button>
 
@@ -124,7 +124,7 @@ export function Header({ activeSection, setActiveSection }) {
             exit={{ opacity: 0, y: -20 }}
             className="md:hidden fixed inset-x-4 top-24 z-[101]"
           >
-            <div className="glass-card p-10 border-white/20 shadow-2xl rounded-[2.5rem] flex flex-col gap-10">
+            <div className="glass-card p-8 border-white/20 shadow-2xl rounded-[2rem] flex flex-col gap-8">
               <ul className="flex flex-col gap-6">
                 {navItems.map((item, idx) => (
                   <motion.li 
@@ -135,7 +135,7 @@ export function Header({ activeSection, setActiveSection }) {
                   >
                     <button
                       onClick={() => handleNavClick(item.id)}
-                      className={`text-4xl font-black uppercase tracking-tighter transition-all ${activeSection === item.id ? 'text-primary scale-105' : 'text-muted-foreground hover:text-foreground'
+                      className={`text-2xl font-black uppercase tracking-tighter transition-all ${activeSection === item.id ? 'text-primary scale-105' : 'text-muted-foreground hover:text-foreground'
                         }`}
                     >
                       {item.label}

@@ -63,12 +63,12 @@ export function Hero({ setActiveSection }) {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-card border-white/20 text-[10px] md:text-xs font-black tracking-[0.3em] uppercase text-primary mb-10 shadow-2xl relative overflow-hidden group"
+              className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-card border-white/20 text-[10px] font-black tracking-[0.3em] uppercase text-primary mb-10 shadow-2xl relative overflow-hidden group"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative z-10 flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-primary animate-ping shadow-lg shadow-primary/50" />
-                <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">Software Engineer & Full-Stack Developer</span>
+                <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">Software Engineer</span>
               </div>
             </motion.div>
 
@@ -76,14 +76,14 @@ export function Hero({ setActiveSection }) {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-6xl md:text-8xl font-black mb-8 tracking-tighter leading-[0.9] text-foreground relative"
+              className="text-6xl md:text-7xl font-black mb-8 tracking-tighter leading-[0.9] text-foreground relative"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent opacity-20 blur-sm animate-pulse">Engineering</span>
               Engineering <br />
-              <span className="animated-gradient-text relative z-10">Modern Digital</span> <br />
+              <span className="animated-gradient-text relative z-10">Digital</span> <br />
               <span className="relative">
-                <span className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent opacity-30 blur-md">Experiences.</span>
-                <span className="relative z-10">Experiences.</span>
+                <span className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent opacity-30 blur-md">Solutions.</span>
+                <span className="relative z-10">Solutions.</span>
               </span>
             </motion.h1>
 

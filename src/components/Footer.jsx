@@ -12,7 +12,10 @@ export function Footer({ setActiveSection }) {
                     {/* Branding */}
                     <div className="lg:col-span-2 space-y-8">
                         <button
-                            onClick={() => { setActiveSection('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                            onClick={() => { 
+                                const element = document.getElementById('home');
+                                if (element) element.scrollIntoView({ behavior: 'smooth' });
+                            }}
                             className="text-4xl font-black tracking-tighter group flex items-center gap-3"
                         >
                             YIHUNE<span className="text-primary group-hover:rotate-12 transition-transform duration-500">.</span>
@@ -47,7 +50,10 @@ export function Footer({ setActiveSection }) {
                             {['home', 'about', 'projects', 'contact'].map((id) => (
                                 <li key={id}>
                                     <button
-                                        onClick={() => { setActiveSection(id); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                                        onClick={() => { 
+                                            const element = document.getElementById(id);
+                                            if (element) element.scrollIntoView({ behavior: 'smooth' });
+                                        }}
                                         className="text-muted-foreground hover:text-primary transition-all capitalize text-lg font-black tracking-tight"
                                     >
                                         {id}

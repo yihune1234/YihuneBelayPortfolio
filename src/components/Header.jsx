@@ -18,11 +18,15 @@ export function Header({ activeSection, setActiveSection }) {
 
   const handleNavClick = (id) => {
     setIsMobileMenuOpen(false);
-    setActiveSection(id);
+    
+    if (id === 'admin') {
+      setActiveSection('admin');
+      return;
+    }
 
-    // Smooth scroll to top
-    if (id !== 'admin') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 

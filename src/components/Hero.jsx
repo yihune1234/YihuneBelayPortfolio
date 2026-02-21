@@ -110,7 +110,10 @@ export function Hero({ setActiveSection }) {
               className="flex flex-wrap items-center gap-4 md:gap-6 mb-16"
             >
               <motion.button
-                onClick={() => setActiveSection('projects')}
+                onClick={() => {
+                  const element = document.getElementById('projects');
+                  if (element) element.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="btn-primary group !px-10 !py-5 relative overflow-hidden"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
